@@ -1,0 +1,1 @@
+Explain Gradient Descent. Why does the vanishing or exploding gradients problem happen?
