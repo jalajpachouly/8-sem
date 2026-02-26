@@ -1,0 +1,42 @@
+What is the Biological Neuron ?Write short note on Multilayer Feed-Forward network with figure.
+
+Biological Neuron
+A biological neuron is the fundamental unit of the nervous system in living organisms. It is responsible for transmitting information through electrical and chemical signals. ​ A biological neuron consists of three main parts:
+
+Soma (Cell Body): Contains the nucleus and is responsible for maintaining the cell's functions. ​
+Dendrites: Branch-like structures that receive signals from other neurons and transmit them to the soma. ​
+Axon: A long, thin structure that carries electrical impulses away from the soma to other neurons, muscles, or glands. ​ The axon ends in small bulb-like structures called synapses, which connect to other neurons. ​
+
+Key Features:
+
+Neurons communicate through synapses using neurotransmitters.
+The electrical impulses are generated when the input signal exceeds a certain threshold. ​
+Neurons can be excitatory (stimulating other neurons) or inhibitory (preventing other neurons from firing). ​
+
+
+Multilayer Feed-Forward Network ​
+A Multilayer Feed-Forward Network (MLFF) is a type of artificial neural network where data flows in one direction—from the input layer to the output layer—through one or more hidden layers. ​ It is widely used in deep learning for tasks such as classification, regression, and pattern recognition.
+Structure:
+
+Input Layer: Receives input data and passes it to the next layer. ​
+Hidden Layers: Perform intermediate computations and transformations. ​ These layers consist of neurons that apply weights and activation functions to the input data. ​
+Output Layer: Produces the final output based on the computations performed in the previous layers. ​
+
+Key Features:
+
+Feed-Forward: Data flows in one direction, without loops or cycles. ​
+Hidden Layers: Allow the network to learn complex patterns and non-linear relationships. ​
+Activation Functions: Non-linear functions (e.g., ReLU, sigmoid) are applied to introduce non-linearity and enable the network to learn complex mappings.
+
+Figure:
+Below is a representation of a Multilayer Feed-Forward Network:
+
+In the figure, the input layer neurons are connected to the hidden layer neurons through weighted links, and the hidden layer neurons are connected to the output layer neurons. ​ The weights on these links are adjusted during training to minimize the error between the predicted and actual outputs. ​
+Applications:
+
+Image recognition
+Natural language processing ​
+Predictive modeling
+Speech recognition
+
+The Multilayer Feed-Forward Network is a foundational concept in deep learning, enabling the modeling of complex data relationships. ​

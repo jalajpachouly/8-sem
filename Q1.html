@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Q1 – What is a Perceptron? Training Steps</title>
+  <style>
+    :root {
+      --bg: #f5f6fa;
+      --card: #ffffff;
+      --accent: #2d3436;
+      --primary: #0984e3;
+      --shadow: 0 2px 12px rgba(0,0,0,.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: #2d3436; padding: 24px; line-height: 1.7; }
+
+    /* Back nav */
+    .back-link { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--primary); font-size: .9rem; font-weight: 600; margin-bottom: 18px; }
+    .back-link:hover { text-decoration: underline; }
+
+    /* Question banner */
+    .question-banner { background: linear-gradient(135deg, #6c5ce7, #0984e3); color: #fff; border-radius: 14px; padding: 28px 32px; margin-bottom: 28px; box-shadow: 0 4px 20px rgba(108,92,231,.25); }
+    .question-banner .q-label { font-size: .8rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: .85; margin-bottom: 6px; }
+    .question-banner .q-text { font-size: 1.2rem; font-weight: 700; line-height: 1.5; }
+    .question-banner .q-marks { display: inline-block; background: rgba(255,255,255,.2); padding: 4px 14px; border-radius: 20px; font-size: .82rem; margin-top: 10px; font-weight: 600; }
+
+    h1 { text-align: center; font-size: 1.5rem; margin-bottom: 4px; color: var(--accent); }
+    .subtitle { text-align: center; color: #636e72; margin-bottom: 30px; font-size: .9rem; }
+
+    .card { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); padding: 28px 32px; margin-bottom: 26px; }
+    .card h2 { font-size: 1.18rem; color: var(--primary); margin-bottom: 14px; border-bottom: 2px solid #dfe6e9; padding-bottom: 8px; }
+    .card h3 { font-size: 1.02rem; color: #e17055; margin: 18px 0 10px; }
+    .card p { margin-bottom: 12px; font-size: .94rem; text-align: justify; }
+    .card ul, .card ol { margin: 8px 0 14px 22px; font-size: .93rem; }
+    .card li { margin-bottom: 6px; }
+    .highlight { background: #ffeaa7; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+    .keyword { color: #d63031; font-weight: 600; }
+
+    /* SVG figure container */
+    .figure-box { background: #f8f9fa; border: 2px solid #dfe6e9; border-radius: 12px; padding: 20px; margin: 18px 0; text-align: center; overflow-x: auto; }
+    .figure-box .fig-title { font-weight: 700; color: #2d3436; margin-bottom: 12px; font-size: .95rem; }
+    .figure-box svg { max-width: 100%; height: auto; }
+    .figure-box .fig-caption { font-size: .82rem; color: #636e72; margin-top: 12px; font-style: italic; }
+
+    /* Step cards */
+    .step-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 14px; }
+    .step-card { background: #dfe6e9; border-radius: 10px; padding: 16px 20px; transition: transform .15s; border-left: 4px solid var(--primary); }
+    .step-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    .step-card .step-num { display: inline-block; background: var(--primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; text-align: center; line-height: 28px; font-weight: 700; font-size: .85rem; margin-right: 10px; }
+    .step-card h4 { display: inline; color: #2d3436; font-size: .95rem; }
+    .step-card p { font-size: .88rem; margin: 8px 0 0; }
+
+    .formula-box { background: #fdf2e9; border-left: 4px solid #e17055; border-radius: 6px; padding: 14px 20px; margin: 10px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: .9rem; color: #2d3436; }
+
+    .key-points { background: #e8f8f5; border-left: 4px solid #00b894; border-radius: 6px; padding: 16px 20px; margin: 14px 0; }
+    .key-points strong { color: #00b894; }
+
+    table.info-table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+    table.info-table th { background: #2d3436; color: #fff; padding: 10px 14px; text-align: left; font-size: .85rem; }
+    table.info-table td { padding: 10px 14px; border-bottom: 1px solid #eee; font-size: .9rem; vertical-align: top; }
+    table.info-table tr:hover { background: #f0f0f0; }
+
+    footer { text-align: center; margin-top: 36px; font-size: .78rem; color: #b2bec3; }
+
+    @media (max-width: 700px) {
+      body { padding: 12px; }
+      .card { padding: 18px; }
+      .question-banner { padding: 20px; }
+      .question-banner .q-text { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Back to Index -->
+<a class="back-link" href="index.html">&#8592; Back to Unit 2 Index</a>
+
+<!-- ============ QUESTION BANNER ============ -->
+<div class="question-banner">
+  <div class="q-label">Question 1 &bull; Unit 2 – Perceptrons</div>
+  <div class="q-text">What is a Perceptron? What are the steps involved for training a Perceptron in Deep Learning?</div>
+  <span class="q-marks">&#128221; 5 Marks</span>
+</div>
+
+<!-- ============ ANSWER ============ -->
+
+<h1>The Perceptron &amp; Its Training Process</h1>
+<p class="subtitle">Complete answer with diagrams and step-by-step explanation</p>
+
+<!-- ============ WHAT IS A PERCEPTRON ============ -->
+<div class="card">
+  <h2>What is a Perceptron?</h2>
+  <p>
+    A <span class="keyword">Perceptron</span> is the simplest type of artificial neural network, consisting of a <span class="highlight">single-layer feed-forward network</span>. It was introduced by <strong>Frank Rosenblatt</strong> in 1957 and serves as the fundamental building block of modern deep learning.
+  </p>
+  <p>
+    It has an <strong>input layer</strong> and an <strong>output layer</strong>, where the input layer receives signals and the output layer processes them to produce results. The perceptron uses <span class="keyword">weights</span> on synaptic links to connect input neurons to output neurons, and the output is computed using an <span class="keyword">activation function</span>.
+  </p>
+  <p>
+    The perceptron network consists of three types of units:
+  </p>
+  <ul>
+    <li><strong>Sensory (Input) Units</strong> — receive external input signals</li>
+    <li><strong>Associate (Hidden) Units</strong> — process intermediate computations</li>
+    <li><strong>Response (Output) Units</strong> — produce the final classification result</li>
+  </ul>
+
+  <!-- SVG: Perceptron Architecture -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 1 — Architecture of a Single-Layer Perceptron</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 380" width="780" height="380">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
+        </marker>
+        <linearGradient id="inputGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#74b9ff;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#0984e3;stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient id="sumGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#fdcb6e;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#f39c12;stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient id="actGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ff7675;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#d63031;stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient id="outGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#55efc4;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#00b894;stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient id="biasGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#a29bfe;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#6c5ce7;stop-opacity:1"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Labels -->
+      <text x="80" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#0984e3">Input Layer</text>
+      <text x="390" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#f39c12">Summation</text>
+      <text x="540" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#d63031">Activation</text>
+      <text x="700" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#00b894">Output</text>
+
+      <!-- Input nodes -->
+      <circle cx="80" cy="80" r="28" fill="url(#inputGrad)" stroke="#0984e3" stroke-width="2"/>
+      <text x="80" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">x₁</text>
+
+      <circle cx="80" cy="170" r="28" fill="url(#inputGrad)" stroke="#0984e3" stroke-width="2"/>
+      <text x="80" y="175" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">x₂</text>
+
+      <circle cx="80" cy="260" r="28" fill="url(#inputGrad)" stroke="#0984e3" stroke-width="2"/>
+      <text x="80" y="265" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">x₃</text>
+
+      <circle cx="80" cy="350" r="28" fill="url(#inputGrad)" stroke="#0984e3" stroke-width="2"/>
+      <text x="80" y="355" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">xₙ</text>
+
+      <!-- Dots between x3 and xn -->
+      <circle cx="80" cy="300" r="3" fill="#636e72"/>
+      <circle cx="80" cy="315" r="3" fill="#636e72"/>
+      <circle cx="80" cy="330" r="3" fill="#636e72"/>
+
+      <!-- Bias node -->
+      <circle cx="260" cy="350" r="22" fill="url(#biasGrad)" stroke="#6c5ce7" stroke-width="2"/>
+      <text x="260" y="355" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">b</text>
+
+      <!-- Weight labels on connections -->
+      <line x1="108" y1="80" x2="350" y2="185" stroke="#636e72" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+      <text x="200" y="115" font-size="12" fill="#d63031" font-weight="600">w₁</text>
+
+      <line x1="108" y1="170" x2="350" y2="190" stroke="#636e72" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+      <text x="210" y="170" font-size="12" fill="#d63031" font-weight="600">w₂</text>
+
+      <line x1="108" y1="260" x2="350" y2="200" stroke="#636e72" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+      <text x="210" y="240" font-size="12" fill="#d63031" font-weight="600">w₃</text>
+
+      <line x1="108" y1="350" x2="350" y2="210" stroke="#636e72" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+      <text x="200" y="300" font-size="12" fill="#d63031" font-weight="600">wₙ</text>
+
+      <!-- Bias connection -->
+      <line x1="282" y1="345" x2="355" y2="215" stroke="#6c5ce7" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arrowhead)"/>
+
+      <!-- Summation node (Sigma) -->
+      <circle cx="390" cy="195" r="35" fill="url(#sumGrad)" stroke="#f39c12" stroke-width="2.5"/>
+      <text x="390" y="203" text-anchor="middle" font-size="22" font-weight="700" fill="#fff">Σ</text>
+
+      <!-- Y_in label -->
+      <text x="460" y="180" font-size="11" fill="#636e72" font-weight="600">Y_in</text>
+
+      <!-- Arrow from summation to activation -->
+      <line x1="425" y1="195" x2="495" y2="195" stroke="#636e72" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+      <!-- Activation function node -->
+      <rect x="505" y="160" width="70" height="70" rx="12" fill="url(#actGrad)" stroke="#d63031" stroke-width="2.5"/>
+      <text x="540" y="200" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">f(x)</text>
+
+      <!-- Arrow from activation to output -->
+      <line x1="575" y1="195" x2="650" y2="195" stroke="#636e72" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+      <!-- Output node -->
+      <circle cx="700" cy="195" r="32" fill="url(#outGrad)" stroke="#00b894" stroke-width="2.5"/>
+      <text x="700" y="201" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">y</text>
+
+      <!-- Formula below -->
+      <text x="390" y="275" text-anchor="middle" font-size="12" fill="#2d3436" font-weight="600">Y_in = b + Σ(xᵢ · wᵢ)</text>
+      <text x="390" y="295" text-anchor="middle" font-size="12" fill="#2d3436" font-weight="600">y = f(Y_in)</text>
+    </svg>
+    <div class="fig-caption">A perceptron receives inputs x₁…xₙ, multiplies each by its weight, sums with bias b, and passes through an activation function f to produce output y.</div>
+  </div>
+</div>
+
+<!-- ============ ACTIVATION FUNCTION ============ -->
+<div class="card">
+  <h2>Binary Step Activation Function</h2>
+  <p>
+    The perceptron uses a <span class="highlight">binary step activation function</span> with a fixed threshold (θ). The function categorizes the net input into one of two classes:
+  </p>
+
+  <div class="formula-box">
+    <strong>f(Y_in) =</strong><br/>
+    &nbsp;&nbsp;+1 &nbsp; if &nbsp; Y_in &gt; θ<br/>
+    &nbsp;&nbsp;&nbsp;0 &nbsp; if &nbsp; −θ ≤ Y_in ≤ θ<br/>
+    &nbsp;&nbsp;−1 &nbsp; if &nbsp; Y_in &lt; −θ
+  </div>
+
+  <!-- SVG: Binary Step Function -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 2 — Binary Step Activation Function</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300">
+      <!-- Grid lines -->
+      <line x1="50" y1="50" x2="50" y2="250" stroke="#dfe6e9" stroke-width="1"/>
+      <line x1="150" y1="50" x2="150" y2="250" stroke="#dfe6e9" stroke-width="1"/>
+      <line x1="250" y1="50" x2="250" y2="250" stroke="#dfe6e9" stroke-width="1"/>
+      <line x1="350" y1="50" x2="350" y2="250" stroke="#dfe6e9" stroke-width="1"/>
+      <line x1="450" y1="50" x2="450" y2="250" stroke="#dfe6e9" stroke-width="1"/>
+      <line x1="50" y1="80" x2="450" y2="80" stroke="#dfe6e9" stroke-width="1"/>
+      <line x1="50" y1="150" x2="450" y2="150" stroke="#dfe6e9" stroke-width="1"/>
+      <line x1="50" y1="220" x2="450" y2="220" stroke="#dfe6e9" stroke-width="1"/>
+
+      <!-- Axes -->
+      <line x1="50" y1="150" x2="450" y2="150" stroke="#2d3436" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="250" y1="260" x2="250" y2="40" stroke="#2d3436" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+      <!-- Axis labels -->
+      <text x="460" y="155" font-size="13" fill="#2d3436" font-weight="600">Y_in</text>
+      <text x="255" y="35" font-size="13" fill="#2d3436" font-weight="600">f(Y_in)</text>
+
+      <!-- +1 and -1 labels -->
+      <text x="237" y="83" font-size="12" fill="#636e72" text-anchor="end">+1</text>
+      <text x="237" y="153" font-size="12" fill="#636e72" text-anchor="end">0</text>
+      <text x="237" y="223" font-size="12" fill="#636e72" text-anchor="end">−1</text>
+
+      <!-- Threshold labels -->
+      <text x="200" y="270" font-size="11" fill="#6c5ce7" text-anchor="middle">−θ</text>
+      <text x="300" y="270" font-size="11" fill="#6c5ce7" text-anchor="middle">+θ</text>
+
+      <!-- Threshold dashed lines -->
+      <line x1="200" y1="50" x2="200" y2="255" stroke="#6c5ce7" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <line x1="300" y1="50" x2="300" y2="255" stroke="#6c5ce7" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+      <!-- Step function lines -->
+      <!-- y = -1 for Y_in < -θ -->
+      <line x1="50" y1="220" x2="200" y2="220" stroke="#d63031" stroke-width="3"/>
+      <!-- y = 0 for -θ ≤ Y_in ≤ θ -->
+      <line x1="200" y1="150" x2="300" y2="150" stroke="#f39c12" stroke-width="3"/>
+      <!-- y = +1 for Y_in > θ -->
+      <line x1="300" y1="80" x2="450" y2="80" stroke="#00b894" stroke-width="3"/>
+
+      <!-- Vertical step lines -->
+      <line x1="200" y1="220" x2="200" y2="150" stroke="#636e72" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="300" y1="150" x2="300" y2="80" stroke="#636e72" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <!-- Circles at transition points -->
+      <circle cx="200" cy="220" r="5" fill="#d63031" stroke="#fff" stroke-width="2"/>
+      <circle cx="200" cy="150" r="5" fill="#f39c12" stroke="#fff" stroke-width="2"/>
+      <circle cx="300" cy="150" r="5" fill="#f39c12" stroke="#fff" stroke-width="2"/>
+      <circle cx="300" cy="80" r="5" fill="#00b894" stroke="#fff" stroke-width="2"/>
+
+      <!-- Labels on segments -->
+      <text x="125" y="240" font-size="11" fill="#d63031" font-weight="600" text-anchor="middle">y = −1</text>
+      <text x="250" y="140" font-size="11" fill="#f39c12" font-weight="600" text-anchor="middle">y = 0</text>
+      <text x="380" y="72" font-size="11" fill="#00b894" font-weight="600" text-anchor="middle">y = +1</text>
+    </svg>
+    <div class="fig-caption">The binary step activation function outputs +1, 0, or −1 depending on whether the net input exceeds the threshold θ.</div>
+  </div>
+</div>
+
+<!-- ============ TRAINING STEPS ============ -->
+<div class="card">
+  <h2>Steps for Training a Perceptron</h2>
+  <p>
+    The perceptron follows an iterative <span class="keyword">supervised learning</span> algorithm to adjust its weights until the output matches the desired target. Below are the detailed steps:
+  </p>
+
+  <div class="step-grid">
+    <div class="step-card">
+      <span class="step-num">1</span>
+      <h4>Initialization</h4>
+      <p>Set initial <strong>weights</strong> (w₁, w₂, …, wₙ) and <strong>bias</strong> (b) to <em>zero</em> or small random values. Define the <span class="keyword">learning rate</span> η (usually between 0 and 1).</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">2</span>
+      <h4>Input Assignment</h4>
+      <p>Assign input values (x₁, x₂, …, xₙ) to the input layer neurons for each training sample.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">3</span>
+      <h4>Net Input Calculation</h4>
+      <p>Compute the <strong>net input</strong> (weighted sum) using the formula:</p>
+      <div class="formula-box" style="margin-top:8px;">
+        Y_in = b + Σ(xᵢ · wᵢ)
+      </div>
+      <p style="margin-top:6px;">where xᵢ are input values, wᵢ are corresponding weights, and b is the bias.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">4</span>
+      <h4>Apply Activation Function</h4>
+      <p>Use the <strong>activation function</strong> (binary step function) to calculate the output:</p>
+      <div class="formula-box" style="margin-top:8px;">
+        y = f(Y_in)
+      </div>
+      <p style="margin-top:6px;">where f is the binary step activation function with threshold θ.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">5</span>
+      <h4>Compare Output</h4>
+      <p>Compare the calculated output <strong>y</strong> with the desired <strong>target output t</strong>. If y ≠ t, there is an error that must be corrected.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">6</span>
+      <h4>Weight &amp; Bias Adjustment</h4>
+      <p>If there is an error (y ≠ t), update the weights and bias using the <span class="keyword">Perceptron Learning Rule</span>:</p>
+      <div class="formula-box" style="margin-top:8px;">
+        wᵢ(new) = wᵢ(old) + η · xᵢ · t<br/>
+        b(new) = b(old) + η · t
+      </div>
+      <p style="margin-top:6px;">Where η is the learning rate, t is the target value (+1 or −1), and xᵢ is the input value.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">7</span>
+      <h4>Repeat (Convergence)</h4>
+      <p>Repeat steps 3–6 for <strong>all training patterns</strong> until the stopping condition is met — i.e., no change in weights or the error is minimized across all samples.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TRAINING FLOWCHART SVG ============ -->
+<div class="card">
+  <h2>Training Flowchart</h2>
+
+  <div class="figure-box">
+    <div class="fig-title">Figure 3 — Perceptron Training Algorithm Flowchart</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 780" width="520" height="780">
+      <defs>
+        <marker id="arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
+        </marker>
+        <linearGradient id="boxBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#74b9ff"/>
+          <stop offset="100%" style="stop-color:#0984e3"/>
+        </linearGradient>
+        <linearGradient id="boxGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#55efc4"/>
+          <stop offset="100%" style="stop-color:#00b894"/>
+        </linearGradient>
+        <linearGradient id="boxOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#fdcb6e"/>
+          <stop offset="100%" style="stop-color:#f39c12"/>
+        </linearGradient>
+        <linearGradient id="boxRed" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ff7675"/>
+          <stop offset="100%" style="stop-color:#d63031"/>
+        </linearGradient>
+        <linearGradient id="boxPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#a29bfe"/>
+          <stop offset="100%" style="stop-color:#6c5ce7"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Step 1: Initialize -->
+      <rect x="140" y="15" width="240" height="45" rx="10" fill="url(#boxBlue)" stroke="#0984e3" stroke-width="2"/>
+      <text x="260" y="43" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">1. Initialize w, b, η</text>
+
+      <line x1="260" y1="60" x2="260" y2="90" stroke="#636e72" stroke-width="2" marker-end="url(#arrowB)"/>
+
+      <!-- Step 2: For each training sample -->
+      <rect x="120" y="95" width="280" height="45" rx="10" fill="url(#boxPurple)" stroke="#6c5ce7" stroke-width="2"/>
+      <text x="260" y="123" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">2. For each training sample</text>
+
+      <line x1="260" y1="140" x2="260" y2="170" stroke="#636e72" stroke-width="2" marker-end="url(#arrowB)"/>
+
+      <!-- Step 3: Compute Y_in -->
+      <rect x="120" y="175" width="280" height="45" rx="10" fill="url(#boxOrange)" stroke="#f39c12" stroke-width="2"/>
+      <text x="260" y="203" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">3. Y_in = b + Σ(xᵢ · wᵢ)</text>
+
+      <line x1="260" y1="220" x2="260" y2="250" stroke="#636e72" stroke-width="2" marker-end="url(#arrowB)"/>
+
+      <!-- Step 4: Apply Activation -->
+      <rect x="140" y="255" width="240" height="45" rx="10" fill="url(#boxOrange)" stroke="#f39c12" stroke-width="2"/>
+      <text x="260" y="283" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">4. y = f(Y_in)</text>
+
+      <line x1="260" y1="300" x2="260" y2="330" stroke="#636e72" stroke-width="2" marker-end="url(#arrowB)"/>
+
+      <!-- Step 5: Decision diamond — y == t? -->
+      <polygon points="260,335 370,395 260,455 150,395" fill="#ffeaa7" stroke="#f39c12" stroke-width="2.5"/>
+      <text x="260" y="392" text-anchor="middle" font-size="13" font-weight="700" fill="#2d3436">5. y == t ?</text>
+      <text x="260" y="408" text-anchor="middle" font-size="11" fill="#636e72">(Compare output)</text>
+
+      <!-- YES branch — right -->
+      <line x1="370" y1="395" x2="440" y2="395" stroke="#00b894" stroke-width="2" marker-end="url(#arrowB)"/>
+      <text x="405" y="385" font-size="12" fill="#00b894" font-weight="700">Yes</text>
+
+      <!-- Yes: No weight change -->
+      <rect x="445" y="375" width="65" height="40" rx="8" fill="url(#boxGreen)" stroke="#00b894" stroke-width="2"/>
+      <text x="478" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">No</text>
+      <text x="478" y="408" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">change</text>
+
+      <!-- Arrow from "No change" going down to "More samples?" -->
+      <line x1="478" y1="415" x2="478" y2="560" stroke="#00b894" stroke-width="2"/>
+      <line x1="478" y1="560" x2="370" y2="560" stroke="#00b894" stroke-width="2" marker-end="url(#arrowB)"/>
+
+      <!-- NO branch — down -->
+      <line x1="260" y1="455" x2="260" y2="485" stroke="#d63031" stroke-width="2" marker-end="url(#arrowB)"/>
+      <text x="275" y="475" font-size="12" fill="#d63031" font-weight="700">No</text>
+
+      <!-- Step 6: Update weights -->
+      <rect x="110" y="490" width="300" height="50" rx="10" fill="url(#boxRed)" stroke="#d63031" stroke-width="2"/>
+      <text x="260" y="511" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">6. wᵢ(new) = wᵢ(old) + η·xᵢ·t</text>
+      <text x="260" y="528" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">b(new) = b(old) + η·t</text>
+
+      <line x1="260" y1="540" x2="260" y2="570" stroke="#636e72" stroke-width="2" marker-end="url(#arrowB)"/>
+
+      <!-- Decision: More samples? -->
+      <polygon points="260,575 355,620 260,665 165,620" fill="#dfe6e9" stroke="#636e72" stroke-width="2"/>
+      <text x="260" y="618" text-anchor="middle" font-size="11" font-weight="700" fill="#2d3436">More</text>
+      <text x="260" y="633" text-anchor="middle" font-size="11" font-weight="700" fill="#2d3436">samples?</text>
+
+      <!-- YES — loop back left -->
+      <line x1="165" y1="620" x2="60" y2="620" stroke="#0984e3" stroke-width="2"/>
+      <line x1="60" y1="620" x2="60" y2="118" stroke="#0984e3" stroke-width="2"/>
+      <line x1="60" y1="118" x2="120" y2="118" stroke="#0984e3" stroke-width="2" marker-end="url(#arrowB)"/>
+      <text x="80" y="610" font-size="12" fill="#0984e3" font-weight="700">Yes</text>
+
+      <!-- NO — down to converged -->
+      <line x1="260" y1="665" x2="260" y2="695" stroke="#636e72" stroke-width="2" marker-end="url(#arrowB)"/>
+      <text x="278" y="685" font-size="12" fill="#d63031" font-weight="700">No</text>
+
+      <!-- Decision: Weights changed? -->
+      <polygon points="260,700 365,740 260,780 155,740" fill="#e8f8f5" stroke="#00b894" stroke-width="2"/>
+      <text x="260" y="738" text-anchor="middle" font-size="11" font-weight="700" fill="#2d3436">Weights</text>
+      <text x="260" y="753" text-anchor="middle" font-size="11" font-weight="700" fill="#2d3436">changed?</text>
+
+      <!-- YES — loop back -->
+      <line x1="365" y1="740" x2="440" y2="740" stroke="#0984e3" stroke-width="2"/>
+      <line x1="440" y1="740" x2="440" y2="50" stroke="#0984e3" stroke-width="2"/>
+      <line x1="440" y1="50" x2="380" y2="50" stroke="#0984e3" stroke-width="2" marker-end="url(#arrowB)"/>
+      <text x="410" y="730" font-size="12" fill="#0984e3" font-weight="700">Yes</text>
+
+      <!-- NO — Stop -->
+      <text x="138" y="745" font-size="12" fill="#00b894" font-weight="700" text-anchor="end">No → STOP</text>
+    </svg>
+    <div class="fig-caption">The training loop continues until no weight changes occur across an entire epoch — the perceptron has converged.</div>
+  </div>
+</div>
+
+<!-- ============ KEY POINTS ============ -->
+<div class="card">
+  <h2>Key Points</h2>
+
+  <div class="key-points">
+    <ul>
+      <li>The perceptron network consists of <strong>sensory (input)</strong>, <strong>associate (hidden)</strong>, and <strong>response (output)</strong> units.</li>
+      <li>It uses a <strong>binary step activation function</strong> with a fixed threshold.</li>
+      <li>The <strong>perceptron learning rule</strong> adjusts weights based on errors in the output.</li>
+      <li>The perceptron can only learn <strong>linearly separable</strong> patterns (e.g., AND, OR but not XOR).</li>
+      <li>It forms the <strong>foundation</strong> for more complex multi-layer neural networks used in deep learning.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ SUMMARY TABLE ============ -->
+<div class="card">
+  <h2>Summary Table</h2>
+  <table class="info-table">
+    <thead>
+      <tr><th>Component</th><th>Symbol</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Inputs</strong></td>
+        <td>x₁, x₂, …, xₙ</td>
+        <td>Feature values fed into the perceptron</td>
+      </tr>
+      <tr>
+        <td><strong>Weights</strong></td>
+        <td>w₁, w₂, …, wₙ</td>
+        <td>Learnable parameters multiplied with inputs</td>
+      </tr>
+      <tr>
+        <td><strong>Bias</strong></td>
+        <td>b</td>
+        <td>Additional learnable parameter added to weighted sum</td>
+      </tr>
+      <tr>
+        <td><strong>Net Input</strong></td>
+        <td>Y_in</td>
+        <td>b + Σ(xᵢ · wᵢ) — weighted sum of inputs plus bias</td>
+      </tr>
+      <tr>
+        <td><strong>Activation</strong></td>
+        <td>f(Y_in)</td>
+        <td>Binary step function with threshold θ</td>
+      </tr>
+      <tr>
+        <td><strong>Output</strong></td>
+        <td>y</td>
+        <td>Predicted class label (+1, 0, or −1)</td>
+      </tr>
+      <tr>
+        <td><strong>Learning Rate</strong></td>
+        <td>η</td>
+        <td>Controls how much weights change per update (0 to 1)</td>
+      </tr>
+      <tr>
+        <td><strong>Target</strong></td>
+        <td>t</td>
+        <td>Desired output for the given input</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>DL Unit 2 &mdash; Q1 &mdash; Perceptron &amp; Training Steps</footer>
+
+</body>
+</html>

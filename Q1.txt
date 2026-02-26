@@ -1,0 +1,34 @@
+What is a Perceptron? What are the steps involved for training a Perceptron in Deep Learning?
+
+A Perceptron is a type of artificial neural network that consists of a single-layer feed-forward network. ​ It has an input layer and an output layer, where the input layer receives signals and the output layer processes them to produce results. ​ The perceptron uses weights on synaptic links to connect input neurons to output neurons, and the output is computed using an activation function.
+Steps for Training a Perceptron:
+
+Initialization: Set initial weights and bias to zero or small random values. ​ Define the learning rate (usually between 0 and 1).
+Input Assignment: Assign input values to the input layer neurons. ​
+Net Input Calculation: Compute the net input using the formula:
+
+Yin = b + Σ(xi * wi) where xi are input values, wi are weights, and b is the bias. ​
+
+
+Apply Activation Function: Use an activation function (e.g., binary step function) to calculate the output:
+
+y = f(Yin) where f is the activation function. ​
+
+
+Compare Output: Compare the calculated output with the desired (target) output. ​
+Weight Adjustment: If there is an error, update the weights and bias using the perceptron learning rule:
+
+wi(new) = wi(old) + η * xi * t ​
+b(new) = b(old) + η * t ​
+Where η is the learning rate, t is the target value (+1 or -1), and xi is the input value. ​
+
+
+Repeat: Repeat steps 3-6 for all training patterns until the stopping condition is met (e.g., no change in weights or error is minimized).
+
+Key Points:
+
+The perceptron network consists of sensory (input), associate (hidden), and response (output) units. ​
+It uses a binary step activation function with a fixed threshold. ​
+The perceptron learning rule adjusts weights based on errors in the output. ​
+
+This process allows the perceptron to learn and classify input patterns effectively. ​

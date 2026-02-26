@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Q2 – Biological Neuron &amp; Multilayer Feed-Forward Network</title>
+  <style>
+    :root {
+      --bg: #f5f6fa;
+      --card: #ffffff;
+      --accent: #2d3436;
+      --primary: #0984e3;
+      --shadow: 0 2px 12px rgba(0,0,0,.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: #2d3436; padding: 24px; line-height: 1.7; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--primary); font-size: .9rem; font-weight: 600; margin-bottom: 18px; }
+    .back-link:hover { text-decoration: underline; }
+
+    .question-banner { background: linear-gradient(135deg, #6c5ce7, #0984e3); color: #fff; border-radius: 14px; padding: 28px 32px; margin-bottom: 28px; box-shadow: 0 4px 20px rgba(108,92,231,.25); }
+    .question-banner .q-label { font-size: .8rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: .85; margin-bottom: 6px; }
+    .question-banner .q-text { font-size: 1.2rem; font-weight: 700; line-height: 1.5; }
+    .question-banner .q-marks { display: inline-block; background: rgba(255,255,255,.2); padding: 4px 14px; border-radius: 20px; font-size: .82rem; margin-top: 10px; font-weight: 600; }
+
+    h1 { text-align: center; font-size: 1.5rem; margin-bottom: 4px; color: var(--accent); }
+    .subtitle { text-align: center; color: #636e72; margin-bottom: 30px; font-size: .9rem; }
+
+    .card { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); padding: 28px 32px; margin-bottom: 26px; }
+    .card h2 { font-size: 1.18rem; color: var(--primary); margin-bottom: 14px; border-bottom: 2px solid #dfe6e9; padding-bottom: 8px; }
+    .card h3 { font-size: 1.02rem; color: #e17055; margin: 18px 0 10px; }
+    .card p { margin-bottom: 12px; font-size: .94rem; text-align: justify; }
+    .card ul, .card ol { margin: 8px 0 14px 22px; font-size: .93rem; }
+    .card li { margin-bottom: 6px; }
+    .highlight { background: #ffeaa7; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+    .keyword { color: #d63031; font-weight: 600; }
+
+    .figure-box { background: #f8f9fa; border: 2px solid #dfe6e9; border-radius: 12px; padding: 20px; margin: 18px 0; text-align: center; overflow-x: auto; }
+    .figure-box .fig-title { font-weight: 700; color: #2d3436; margin-bottom: 12px; font-size: .95rem; }
+    .figure-box svg { max-width: 100%; height: auto; }
+    .figure-box .fig-caption { font-size: .82rem; color: #636e72; margin-top: 12px; font-style: italic; }
+
+    .part-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 14px; }
+    .part-card { background: #dfe6e9; border-radius: 10px; padding: 16px; transition: transform .15s; }
+    .part-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    .part-card h4 { color: #0984e3; margin-bottom: 6px; font-size: .95rem; }
+    .part-card p { font-size: .88rem; margin-bottom: 0; }
+
+    .key-points { background: #e8f8f5; border-left: 4px solid #00b894; border-radius: 6px; padding: 16px 20px; margin: 14px 0; }
+    .key-points strong { color: #00b894; }
+
+    .app-box { background: #fdf2e9; border-left: 4px solid #e17055; border-radius: 6px; padding: 16px 20px; margin: 14px 0; }
+    .app-box strong { color: #e17055; }
+
+    table.info-table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+    table.info-table th { background: #2d3436; color: #fff; padding: 10px 14px; text-align: left; font-size: .85rem; }
+    table.info-table td { padding: 10px 14px; border-bottom: 1px solid #eee; font-size: .9rem; vertical-align: top; }
+    table.info-table tr:hover { background: #f0f0f0; }
+
+    footer { text-align: center; margin-top: 36px; font-size: .78rem; color: #b2bec3; }
+
+    @media (max-width: 700px) {
+      body { padding: 12px; }
+      .card { padding: 18px; }
+      .part-grid { grid-template-columns: 1fr; }
+      .question-banner { padding: 20px; }
+      .question-banner .q-text { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Back to Index -->
+<a class="back-link" href="index.html">&#8592; Back to Unit 2 Index</a>
+
+<!-- ============ QUESTION BANNER ============ -->
+<div class="question-banner">
+  <div class="q-label">Question 2 &bull; Unit 2 – Neural Networks</div>
+  <div class="q-text">What is the Biological Neuron? Write short note on Multilayer Feed-Forward Network with figure.</div>
+  <span class="q-marks">&#128221; 5 Marks</span>
+</div>
+
+<!-- ============ ANSWER ============ -->
+
+<h1>Biological Neuron &amp; Multilayer Feed-Forward Network</h1>
+<p class="subtitle">Complete answer with diagrams</p>
+
+<!-- ======================================================== -->
+<!--                   PART A: BIOLOGICAL NEURON              -->
+<!-- ======================================================== -->
+<div class="card">
+  <h2>Part A — What is a Biological Neuron?</h2>
+  <p>
+    A <span class="keyword">biological neuron</span> is the fundamental unit of the nervous system in living organisms. It is responsible for transmitting information through <span class="highlight">electrical and chemical signals</span>. The human brain contains approximately 86 billion neurons, forming an incredibly complex network.
+  </p>
+
+  <h3>Three Main Parts of a Biological Neuron</h3>
+
+  <div class="part-grid">
+    <div class="part-card">
+      <h4>1. Soma (Cell Body)</h4>
+      <p>Contains the <strong>nucleus</strong> and is responsible for maintaining the cell's functions. It processes incoming signals and determines whether to fire an output signal.</p>
+    </div>
+    <div class="part-card">
+      <h4>2. Dendrites</h4>
+      <p><strong>Branch-like structures</strong> that receive signals from other neurons and transmit them to the soma. A neuron may have thousands of dendrites.</p>
+    </div>
+    <div class="part-card">
+      <h4>3. Axon</h4>
+      <p>A <strong>long, thin structure</strong> that carries electrical impulses away from the soma to other neurons, muscles, or glands. Ends in small bulb-like structures called <em>synapses</em>.</p>
+    </div>
+    <div class="part-card">
+      <h4>4. Synapse</h4>
+      <p>The <strong>junction</strong> between two neurons where signal transmission occurs via <em>neurotransmitters</em> (chemical messengers). It connects the axon terminal of one neuron to the dendrite of another.</p>
+    </div>
+  </div>
+
+  <!-- SVG: Biological Neuron -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 1 — Structure of a Biological Neuron</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" width="820" height="420">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#636e72"/>
+        </marker>
+        <radialGradient id="somaGrad" cx="50%" cy="45%">
+          <stop offset="0%" style="stop-color:#a29bfe"/>
+          <stop offset="100%" style="stop-color:#6c5ce7"/>
+        </radialGradient>
+        <linearGradient id="axonGrad" x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%" style="stop-color:#74b9ff"/>
+          <stop offset="100%" style="stop-color:#0984e3"/>
+        </linearGradient>
+        <radialGradient id="nucleusGrad" cx="50%" cy="45%">
+          <stop offset="0%" style="stop-color:#ffeaa7"/>
+          <stop offset="100%" style="stop-color:#fdcb6e"/>
+        </radialGradient>
+      </defs>
+
+      <!-- ===== DENDRITES (left side) ===== -->
+      <!-- Dendrite branches -->
+      <path d="M 100,100 Q 130,130 170,140 Q 190,145 210,160" stroke="#00b894" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M 80,140 Q 120,155 160,160 Q 190,162 210,175" stroke="#00b894" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M 60,190 Q 100,195 150,195 Q 185,198 210,200" stroke="#00b894" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M 70,250 Q 110,245 155,235 Q 185,225 210,215" stroke="#00b894" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M 90,290 Q 130,275 165,260 Q 190,248 210,235" stroke="#00b894" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M 110,320 Q 145,300 175,280 Q 195,265 215,250" stroke="#00b894" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+      <!-- Dendrite sub-branches (small forks) -->
+      <path d="M 100,100 Q 85,80 70,65" stroke="#00b894" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 100,100 Q 110,75 105,55" stroke="#00b894" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 80,140 Q 60,125 45,110" stroke="#00b894" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 60,190 Q 40,180 25,165" stroke="#00b894" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 60,190 Q 35,200 20,210" stroke="#00b894" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 70,250 Q 45,255 30,270" stroke="#00b894" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 90,290 Q 70,305 55,320" stroke="#00b894" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 110,320 Q 100,340 95,360" stroke="#00b894" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+      <!-- Small dots at dendrite tips (receptor points) -->
+      <circle cx="70" cy="65" r="3" fill="#00b894"/>
+      <circle cx="105" cy="55" r="3" fill="#00b894"/>
+      <circle cx="45" cy="110" r="3" fill="#00b894"/>
+      <circle cx="25" cy="165" r="3" fill="#00b894"/>
+      <circle cx="20" cy="210" r="3" fill="#00b894"/>
+      <circle cx="30" cy="270" r="3" fill="#00b894"/>
+      <circle cx="55" cy="320" r="3" fill="#00b894"/>
+      <circle cx="95" cy="360" r="3" fill="#00b894"/>
+
+      <!-- ===== SOMA (Cell Body) ===== -->
+      <ellipse cx="270" cy="200" rx="70" ry="65" fill="url(#somaGrad)" stroke="#6c5ce7" stroke-width="3"/>
+
+      <!-- Nucleus inside Soma -->
+      <ellipse cx="270" cy="195" rx="28" ry="25" fill="url(#nucleusGrad)" stroke="#f39c12" stroke-width="2"/>
+      <text x="270" y="200" text-anchor="middle" font-size="10" font-weight="700" fill="#2d3436">Nucleus</text>
+
+      <!-- ===== AXON HILLOCK ===== -->
+      <path d="M 340,200 Q 365,200 385,200" stroke="#0984e3" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+      <!-- ===== AXON (long structure) ===== -->
+      <!-- Myelin sheath segments -->
+      <rect x="385" y="185" width="55" height="30" rx="14" fill="#74b9ff" stroke="#0984e3" stroke-width="2"/>
+      <rect x="455" y="185" width="55" height="30" rx="14" fill="#74b9ff" stroke="#0984e3" stroke-width="2"/>
+      <rect x="525" y="185" width="55" height="30" rx="14" fill="#74b9ff" stroke="#0984e3" stroke-width="2"/>
+      <rect x="595" y="185" width="55" height="30" rx="14" fill="#74b9ff" stroke="#0984e3" stroke-width="2"/>
+
+      <!-- Axon line connecting through myelin -->
+      <line x1="385" y1="200" x2="650" y2="200" stroke="#2d3436" stroke-width="2"/>
+
+      <!-- Nodes of Ranvier (gaps) -->
+      <circle cx="448" cy="200" r="4" fill="#fdcb6e" stroke="#f39c12" stroke-width="1.5"/>
+      <circle cx="518" cy="200" r="4" fill="#fdcb6e" stroke="#f39c12" stroke-width="1.5"/>
+      <circle cx="588" cy="200" r="4" fill="#fdcb6e" stroke="#f39c12" stroke-width="1.5"/>
+
+      <!-- ===== AXON TERMINALS (Synapses) ===== -->
+      <path d="M 650,200 Q 680,175 710,155" stroke="#d63031" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M 650,200 Q 680,195 720,190" stroke="#d63031" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M 650,200 Q 680,210 720,215" stroke="#d63031" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M 650,200 Q 680,230 710,250" stroke="#d63031" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+      <!-- Synaptic bulbs -->
+      <circle cx="710" cy="155" r="10" fill="#ff7675" stroke="#d63031" stroke-width="2"/>
+      <circle cx="720" cy="190" r="10" fill="#ff7675" stroke="#d63031" stroke-width="2"/>
+      <circle cx="720" cy="215" r="10" fill="#ff7675" stroke="#d63031" stroke-width="2"/>
+      <circle cx="710" cy="250" r="10" fill="#ff7675" stroke="#d63031" stroke-width="2"/>
+
+      <!-- ===== LABELS ===== -->
+      <text x="75" y="45" font-size="13" font-weight="700" fill="#00b894">Dendrites</text>
+      <text x="270" y="290" text-anchor="middle" font-size="13" font-weight="700" fill="#6c5ce7">Soma</text>
+      <text x="270" y="305" text-anchor="middle" font-size="11" fill="#636e72">(Cell Body)</text>
+
+      <text x="365" y="170" font-size="11" font-weight="600" fill="#2d3436">Axon Hillock</text>
+
+      <text x="510" y="242" text-anchor="middle" font-size="13" font-weight="700" fill="#0984e3">Axon</text>
+      <text x="510" y="258" text-anchor="middle" font-size="10" fill="#636e72">(with Myelin Sheath)</text>
+
+      <text x="448" y="230" text-anchor="middle" font-size="9" fill="#f39c12">Node of</text>
+      <text x="448" y="240" text-anchor="middle" font-size="9" fill="#f39c12">Ranvier</text>
+
+      <text x="750" y="205" font-size="12" font-weight="700" fill="#d63031">Synaptic</text>
+      <text x="750" y="220" font-size="12" font-weight="700" fill="#d63031">Terminals</text>
+
+      <!-- Signal direction arrow -->
+      <line x1="140" y1="385" x2="700" y2="385" stroke="#636e72" stroke-width="2" marker-end="url(#arr)" stroke-dasharray="8,4"/>
+      <text x="420" y="410" text-anchor="middle" font-size="12" font-weight="600" fill="#636e72">Direction of Signal Flow →</text>
+    </svg>
+    <div class="fig-caption">A biological neuron: signals arrive at dendrites, are processed in the soma (cell body), and travel along the axon to synaptic terminals that connect to other neurons.</div>
+  </div>
+
+  <h3>Key Features of Biological Neurons</h3>
+  <div class="key-points">
+    <ul>
+      <li>Neurons communicate through <strong>synapses</strong> using chemical messengers called <em>neurotransmitters</em>.</li>
+      <li>Electrical impulses are generated when the input signal exceeds a certain <strong>threshold</strong>.</li>
+      <li>Neurons can be <strong>excitatory</strong> (stimulating other neurons) or <strong>inhibitory</strong> (preventing other neurons from firing).</li>
+      <li>The biological neuron is the <strong>inspiration</strong> for the artificial neuron (perceptron) in deep learning.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ======================================================== -->
+<!--          COMPARISON: BIOLOGICAL vs ARTIFICIAL            -->
+<!-- ======================================================== -->
+<div class="card">
+  <h2>Biological Neuron vs. Artificial Neuron</h2>
+  <table class="info-table">
+    <thead>
+      <tr><th>Biological Neuron</th><th>Artificial Neuron</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Dendrites receive input signals</td><td>Input layer receives input features</td></tr>
+      <tr><td>Synaptic strengths modulate signals</td><td>Weights modulate input values</td></tr>
+      <tr><td>Soma processes &amp; sums signals</td><td>Summation function (Σ) computes weighted sum</td></tr>
+      <tr><td>Threshold determines firing</td><td>Activation function determines output</td></tr>
+      <tr><td>Axon transmits output signal</td><td>Output layer produces result</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ======================================================== -->
+<!--        PART B: MULTILAYER FEED-FORWARD NETWORK           -->
+<!-- ======================================================== -->
+<div class="card">
+  <h2>Part B — Multilayer Feed-Forward Network</h2>
+  <p>
+    A <span class="keyword">Multilayer Feed-Forward Network</span> (MLFF) is a type of artificial neural network where data flows in <span class="highlight">one direction only</span> — from the input layer to the output layer — through one or more hidden layers. It is widely used in deep learning for tasks such as classification, regression, and pattern recognition.
+  </p>
+
+  <h3>Structure of the Network</h3>
+  <div class="part-grid">
+    <div class="part-card">
+      <h4>Input Layer</h4>
+      <p>Receives input data (features) and passes it to the next layer. The number of neurons equals the number of input features.</p>
+    </div>
+    <div class="part-card">
+      <h4>Hidden Layer(s)</h4>
+      <p>Perform intermediate computations and transformations. Neurons apply <strong>weights</strong> and <strong>activation functions</strong> to learn complex patterns.</p>
+    </div>
+    <div class="part-card">
+      <h4>Output Layer</h4>
+      <p>Produces the final output (predictions) based on computations performed in the previous layers.</p>
+    </div>
+    <div class="part-card">
+      <h4>Weighted Links</h4>
+      <p>Every neuron in one layer is connected to every neuron in the next layer via <strong>weighted connections</strong> adjusted during training.</p>
+    </div>
+  </div>
+
+  <!-- SVG: Multilayer Feed-Forward Network -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 2 — Multilayer Feed-Forward Neural Network</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 500" width="780" height="500">
+      <defs>
+        <marker id="arrFF" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#b2bec3"/>
+        </marker>
+        <linearGradient id="inGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#74b9ff"/>
+          <stop offset="100%" style="stop-color:#0984e3"/>
+        </linearGradient>
+        <linearGradient id="h1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#a29bfe"/>
+          <stop offset="100%" style="stop-color:#6c5ce7"/>
+        </linearGradient>
+        <linearGradient id="h2Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#fdcb6e"/>
+          <stop offset="100%" style="stop-color:#f39c12"/>
+        </linearGradient>
+        <linearGradient id="outGradFF" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#55efc4"/>
+          <stop offset="100%" style="stop-color:#00b894"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Layer labels -->
+      <text x="100" y="35" text-anchor="middle" font-size="14" font-weight="700" fill="#0984e3">Input</text>
+      <text x="100" y="52" text-anchor="middle" font-size="11" fill="#636e72">Layer</text>
+
+      <text x="300" y="35" text-anchor="middle" font-size="14" font-weight="700" fill="#6c5ce7">Hidden</text>
+      <text x="300" y="52" text-anchor="middle" font-size="11" fill="#636e72">Layer 1</text>
+
+      <text x="500" y="35" text-anchor="middle" font-size="14" font-weight="700" fill="#f39c12">Hidden</text>
+      <text x="500" y="52" text-anchor="middle" font-size="11" fill="#636e72">Layer 2</text>
+
+      <text x="680" y="35" text-anchor="middle" font-size="14" font-weight="700" fill="#00b894">Output</text>
+      <text x="680" y="52" text-anchor="middle" font-size="11" fill="#636e72">Layer</text>
+
+      <!-- ===== CONNECTIONS: Input → Hidden 1 ===== -->
+      <!-- From each input node to each hidden1 node (4 inputs × 5 hidden1 = 20 lines) -->
+      <!-- Input node positions: y = 100, 190, 280, 370 -->
+      <!-- Hidden1 node positions: y = 80, 150, 220, 290, 360 -->
+      <g stroke="#b2bec3" stroke-width="1" opacity=".5">
+        <!-- x1 connections -->
+        <line x1="130" y1="100" x2="270" y2="80"/>
+        <line x1="130" y1="100" x2="270" y2="150"/>
+        <line x1="130" y1="100" x2="270" y2="220"/>
+        <line x1="130" y1="100" x2="270" y2="290"/>
+        <line x1="130" y1="100" x2="270" y2="360"/>
+        <!-- x2 connections -->
+        <line x1="130" y1="190" x2="270" y2="80"/>
+        <line x1="130" y1="190" x2="270" y2="150"/>
+        <line x1="130" y1="190" x2="270" y2="220"/>
+        <line x1="130" y1="190" x2="270" y2="290"/>
+        <line x1="130" y1="190" x2="270" y2="360"/>
+        <!-- x3 connections -->
+        <line x1="130" y1="280" x2="270" y2="80"/>
+        <line x1="130" y1="280" x2="270" y2="150"/>
+        <line x1="130" y1="280" x2="270" y2="220"/>
+        <line x1="130" y1="280" x2="270" y2="290"/>
+        <line x1="130" y1="280" x2="270" y2="360"/>
+        <!-- x4 connections -->
+        <line x1="130" y1="370" x2="270" y2="80"/>
+        <line x1="130" y1="370" x2="270" y2="150"/>
+        <line x1="130" y1="370" x2="270" y2="220"/>
+        <line x1="130" y1="370" x2="270" y2="290"/>
+        <line x1="130" y1="370" x2="270" y2="360"/>
+      </g>
+
+      <!-- ===== CONNECTIONS: Hidden 1 → Hidden 2 ===== -->
+      <!-- Hidden1 positions: y = 80, 150, 220, 290, 360 -->
+      <!-- Hidden2 positions: y = 120, 220, 320 -->
+      <g stroke="#b2bec3" stroke-width="1" opacity=".5">
+        <line x1="330" y1="80" x2="470" y2="120"/>
+        <line x1="330" y1="80" x2="470" y2="220"/>
+        <line x1="330" y1="80" x2="470" y2="320"/>
+        <line x1="330" y1="150" x2="470" y2="120"/>
+        <line x1="330" y1="150" x2="470" y2="220"/>
+        <line x1="330" y1="150" x2="470" y2="320"/>
+        <line x1="330" y1="220" x2="470" y2="120"/>
+        <line x1="330" y1="220" x2="470" y2="220"/>
+        <line x1="330" y1="220" x2="470" y2="320"/>
+        <line x1="330" y1="290" x2="470" y2="120"/>
+        <line x1="330" y1="290" x2="470" y2="220"/>
+        <line x1="330" y1="290" x2="470" y2="320"/>
+        <line x1="330" y1="360" x2="470" y2="120"/>
+        <line x1="330" y1="360" x2="470" y2="220"/>
+        <line x1="330" y1="360" x2="470" y2="320"/>
+      </g>
+
+      <!-- ===== CONNECTIONS: Hidden 2 → Output ===== -->
+      <!-- Hidden2 positions: y = 120, 220, 320 -->
+      <!-- Output positions: y = 170, 270 -->
+      <g stroke="#b2bec3" stroke-width="1" opacity=".5">
+        <line x1="530" y1="120" x2="650" y2="170"/>
+        <line x1="530" y1="120" x2="650" y2="270"/>
+        <line x1="530" y1="220" x2="650" y2="170"/>
+        <line x1="530" y1="220" x2="650" y2="270"/>
+        <line x1="530" y1="320" x2="650" y2="170"/>
+        <line x1="530" y1="320" x2="650" y2="270"/>
+      </g>
+
+      <!-- ===== INPUT NODES ===== -->
+      <circle cx="100" cy="100" r="28" fill="url(#inGrad)" stroke="#0984e3" stroke-width="2.5"/>
+      <text x="100" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">x₁</text>
+
+      <circle cx="100" cy="190" r="28" fill="url(#inGrad)" stroke="#0984e3" stroke-width="2.5"/>
+      <text x="100" y="195" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">x₂</text>
+
+      <circle cx="100" cy="280" r="28" fill="url(#inGrad)" stroke="#0984e3" stroke-width="2.5"/>
+      <text x="100" y="285" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">x₃</text>
+
+      <circle cx="100" cy="370" r="28" fill="url(#inGrad)" stroke="#0984e3" stroke-width="2.5"/>
+      <text x="100" y="375" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">x₄</text>
+
+      <!-- ===== HIDDEN LAYER 1 NODES ===== -->
+      <circle cx="300" cy="80" r="26" fill="url(#h1Grad)" stroke="#6c5ce7" stroke-width="2.5"/>
+      <text x="300" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">h₁</text>
+
+      <circle cx="300" cy="150" r="26" fill="url(#h1Grad)" stroke="#6c5ce7" stroke-width="2.5"/>
+      <text x="300" y="155" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">h₂</text>
+
+      <circle cx="300" cy="220" r="26" fill="url(#h1Grad)" stroke="#6c5ce7" stroke-width="2.5"/>
+      <text x="300" y="225" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">h₃</text>
+
+      <circle cx="300" cy="290" r="26" fill="url(#h1Grad)" stroke="#6c5ce7" stroke-width="2.5"/>
+      <text x="300" y="295" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">h₄</text>
+
+      <circle cx="300" cy="360" r="26" fill="url(#h1Grad)" stroke="#6c5ce7" stroke-width="2.5"/>
+      <text x="300" y="365" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">h₅</text>
+
+      <!-- ===== HIDDEN LAYER 2 NODES ===== -->
+      <circle cx="500" cy="120" r="26" fill="url(#h2Grad)" stroke="#f39c12" stroke-width="2.5"/>
+      <text x="500" y="125" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">h₆</text>
+
+      <circle cx="500" cy="220" r="26" fill="url(#h2Grad)" stroke="#f39c12" stroke-width="2.5"/>
+      <text x="500" y="225" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">h₇</text>
+
+      <circle cx="500" cy="320" r="26" fill="url(#h2Grad)" stroke="#f39c12" stroke-width="2.5"/>
+      <text x="500" y="325" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">h₈</text>
+
+      <!-- ===== OUTPUT NODES ===== -->
+      <circle cx="680" cy="170" r="28" fill="url(#outGradFF)" stroke="#00b894" stroke-width="2.5"/>
+      <text x="680" y="175" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">y₁</text>
+
+      <circle cx="680" cy="270" r="28" fill="url(#outGradFF)" stroke="#00b894" stroke-width="2.5"/>
+      <text x="680" y="275" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">y₂</text>
+
+      <!-- Weight labels (a few representative ones) -->
+      <text x="185" y="82" font-size="10" fill="#d63031" font-weight="600">w₁₁</text>
+      <text x="185" y="185" font-size="10" fill="#d63031" font-weight="600">w₂₂</text>
+      <text x="395" y="108" font-size="10" fill="#d63031" font-weight="600">w'₁₁</text>
+      <text x="585" y="162" font-size="10" fill="#d63031" font-weight="600">w"₁₁</text>
+
+      <!-- Data flow direction arrow -->
+      <line x1="80" y1="460" x2="700" y2="460" stroke="#636e72" stroke-width="2" marker-end="url(#arrFF)" stroke-dasharray="8,4"/>
+      <text x="390" y="488" text-anchor="middle" font-size="12" font-weight="600" fill="#636e72">Feed-Forward Direction (No Loops) →</text>
+    </svg>
+    <div class="fig-caption">A multilayer feed-forward network with 4 inputs, two hidden layers (5 and 3 neurons), and 2 outputs. Data flows strictly left-to-right with no feedback loops.</div>
+  </div>
+</div>
+
+<!-- ============ KEY FEATURES ============ -->
+<div class="card">
+  <h2>Key Features of Multilayer Feed-Forward Networks</h2>
+
+  <div class="key-points">
+    <ul>
+      <li><strong>Feed-Forward:</strong> Data flows in <em>one direction only</em>, from input to output, without loops or cycles.</li>
+      <li><strong>Hidden Layers:</strong> Allow the network to learn <em>complex patterns</em> and <em>non-linear relationships</em> that a single-layer perceptron cannot.</li>
+      <li><strong>Activation Functions:</strong> Non-linear functions (e.g., ReLU, Sigmoid, Tanh) are applied at each neuron to enable learning of complex mappings.</li>
+      <li><strong>Fully Connected:</strong> Every neuron in one layer is connected to every neuron in the next layer (dense connections).</li>
+      <li><strong>Training:</strong> Weights are adjusted during training using <em>backpropagation</em> and gradient descent to minimize the error between predicted and actual outputs.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ APPLICATIONS ============ -->
+<div class="card">
+  <h2>Applications</h2>
+  <div class="app-box">
+    <ul>
+      <li><strong>Image Recognition</strong> — classifying objects in images (e.g., MNIST digit recognition)</li>
+      <li><strong>Natural Language Processing</strong> — sentiment analysis, text classification</li>
+      <li><strong>Predictive Modeling</strong> — stock price forecasting, weather prediction</li>
+      <li><strong>Speech Recognition</strong> — converting spoken language to text</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ SUMMARY TABLE ============ -->
+<div class="card">
+  <h2>Summary</h2>
+  <table class="info-table">
+    <thead>
+      <tr><th>Aspect</th><th>Biological Neuron</th><th>Multilayer Feed-Forward Network</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Unit</strong></td>
+        <td>Single nerve cell</td>
+        <td>Multiple artificial neurons in layers</td>
+      </tr>
+      <tr>
+        <td><strong>Input</strong></td>
+        <td>Dendrites receive signals</td>
+        <td>Input layer receives feature vectors</td>
+      </tr>
+      <tr>
+        <td><strong>Processing</strong></td>
+        <td>Soma sums &amp; thresholds</td>
+        <td>Hidden layers apply weights + activation</td>
+      </tr>
+      <tr>
+        <td><strong>Output</strong></td>
+        <td>Axon transmits signal</td>
+        <td>Output layer produces predictions</td>
+      </tr>
+      <tr>
+        <td><strong>Learning</strong></td>
+        <td>Synaptic plasticity</td>
+        <td>Backpropagation &amp; gradient descent</td>
+      </tr>
+      <tr>
+        <td><strong>Direction</strong></td>
+        <td>Dendrites → Soma → Axon</td>
+        <td>Input → Hidden → Output (feed-forward)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>DL Unit 2 &mdash; Q2 &mdash; Biological Neuron &amp; Multilayer Feed-Forward Network</footer>
+
+</body>
+</html>
