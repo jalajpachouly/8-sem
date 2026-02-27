@@ -1,1 +1,132 @@
 Explain Gradient Descent. Why does the vanishing or exploding gradients problem happen?
+Gradient Descent
+Gradient Descent is an optimization algorithm used to train machine learning models and neural networks. ​ Its primary goal is to minimize the cost function (or loss function), which measures the error between the predicted and actual values. ​ By iteratively adjusting the model's parameters (weights and biases), gradient descent helps the model learn and improve its accuracy. ​
+How Gradient Descent Works:
+
+Initialization:
+
+Start with random values for the model's parameters (weights and biases). ​
+
+
+Compute the Cost Function:
+
+Calculate the error between the predicted output and the actual output using a cost function (e.g., Mean Squared Error or Cross-Entropy Loss). ​
+
+
+Calculate Gradients:
+
+Compute the derivative (slope) of the cost function with respect to the model's parameters to determine the direction of steepest descent. ​
+
+
+Update Parameters:
+
+Adjust the parameters in the direction that reduces the cost function. ​ The update rule is:
+
+New Parameter = Old Parameter - Learning Rate × Gradient ​
+
+
+
+
+Repeat:
+
+Continue the process until the cost function reaches its minimum or a stopping criterion is met. ​
+
+
+
+Types of Gradient Descent:
+
+Batch Gradient Descent:
+
+Updates parameters after evaluating all training examples. ​
+Computationally expensive for large datasets but provides stable convergence. ​
+
+
+Stochastic Gradient Descent (SGD):
+
+Updates parameters after evaluating each training example. ​
+Faster but may result in noisy convergence.
+
+
+Mini-Batch Gradient Descent:
+
+Combines the benefits of batch and stochastic gradient descent by updating parameters after evaluating a small batch of training examples. ​
+
+
+
+
+Vanishing and Exploding Gradients Problem ​
+The vanishing gradient and exploding gradient problems occur during the training of deep neural networks, especially when using gradient-based optimization methods like backpropagation. ​
+Vanishing Gradients:
+
+What Happens:
+
+In deep networks, gradients become very small as they are propagated backward through many layers. This causes earlier layers to receive negligible updates, slowing down learning or stopping it altogether. ​
+
+
+Why It Happens:
+
+Activation functions like sigmoid or tanh squash input values into a small range (e.g., [0, 1] for sigmoid and [-1, 1] for tanh). ​ When the derivative of these functions is small, the gradients shrink as they propagate backward, leading to vanishing gradients. ​
+
+
+Impact:
+
+The model struggles to learn long-range dependencies, and training becomes inefficient or fails entirely.
+
+
+
+
+Exploding Gradients:
+
+What Happens:
+
+Gradients become excessively large during backpropagation, causing the model's weights to grow uncontrollably. ​
+
+
+Why It Happens:
+
+This often occurs when the weights are initialized poorly or when the network is very deep, leading to large values during matrix multiplications. ​
+
+
+Impact:
+
+The model becomes unstable, and the cost function fails to converge.
+
+
+
+
+Solutions to Vanishing and Exploding Gradients ​
+
+Use Better Activation Functions:
+
+Replace sigmoid or tanh with ReLU (Rectified Linear Unit), which does not squash values and avoids vanishing gradients. ​
+
+
+Batch Normalization:
+
+Normalize the inputs to each layer to stabilize the training process and prevent gradients from vanishing or exploding. ​
+
+
+Gradient Clipping:
+
+Limit the size of gradients during backpropagation to prevent them from exploding. ​
+
+
+Residual Connections:
+
+Use skip connections (as in Residual Neural Networks) to allow gradients to flow directly between layers, reducing the risk of vanishing gradients. ​
+
+
+Long Short-Term Memory (LSTM):
+
+LSTMs are designed to handle vanishing gradients by maintaining constant gradient values during backpropagation. ​
+
+
+Proper Weight Initialization:
+
+Use techniques like Xavier Initialization or He Initialization to ensure weights are initialized in a way that avoids extreme values.
+
+
+
+
+Conclusion
+Gradient Descent is a fundamental optimization algorithm for training machine learning models, but it can face challenges like vanishing or exploding gradients in deep networks. ​ By using techniques like ReLU activation, batch normalization, and proper weight initialization, these issues can be mitigated, enabling efficient and stable training of deep learning models. ​
