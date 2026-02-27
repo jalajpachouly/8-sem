@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Q8 – PyTorch &amp; Google Colab | DL Unit 2</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#2d3436; --primary:#0984e3; --shadow:0 2px 12px rgba(0,0,0,.08); }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:#2d3436; padding:24px; line-height:1.8; font-size:15px; }
+    .back-link { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--primary); font-size:.9rem; font-weight:600; margin-bottom:18px; }
+    .back-link:hover { text-decoration:underline; }
+    .question-banner { background:linear-gradient(135deg,#6c5ce7,#0984e3); color:#fff; border-radius:14px; padding:28px 32px; margin-bottom:28px; box-shadow:0 4px 20px rgba(108,92,231,.25); }
+    .question-banner .q-label { font-size:.8rem; text-transform:uppercase; letter-spacing:1.5px; opacity:.85; margin-bottom:6px; }
+    .question-banner .q-text { font-size:1.2rem; font-weight:700; line-height:1.5; }
+    .question-banner .q-marks { display:inline-block; background:rgba(255,255,255,.2); padding:4px 14px; border-radius:20px; font-size:.82rem; margin-top:10px; font-weight:600; }
+    h1 { text-align:center; font-size:1.5rem; margin-bottom:4px; color:var(--accent); }
+    .subtitle { text-align:center; color:#636e72; margin-bottom:30px; font-size:.9rem; }
+    .card { background:var(--card); border-radius:14px; box-shadow:var(--shadow); padding:28px 32px; margin-bottom:26px; }
+    .card h2 { font-size:1.18rem; color:var(--primary); margin-bottom:14px; border-bottom:2px solid #dfe6e9; padding-bottom:8px; }
+    .card p { font-size:.94rem; margin-bottom:10px; text-align:justify; }
+    .highlight { background:#ffeaa7; padding:2px 6px; border-radius:4px; font-weight:600; }
+    .keyword { color:#d63031; font-weight:600; }
+    .figure-box { background:#f8f9fa; border:2px solid #dfe6e9; border-radius:12px; padding:20px; margin:18px 0; text-align:center; overflow-x:auto; }
+    .figure-box .fig-title { font-weight:700; color:#2d3436; margin-bottom:12px; font-size:.95rem; }
+    .figure-box svg { max-width:100%; height:auto; }
+    .figure-box .fig-caption { font-size:.82rem; color:#636e72; margin-top:12px; font-style:italic; }
+    /* Feature grid */
+    .feat-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+    .feat-card { background:#f0f4ff; border-left:4px solid var(--primary); border-radius:0 10px 10px 0; padding:14px 16px; }
+    .feat-card.colab { border-left-color:#f39c12; background:#fff8f0; }
+    .feat-card h4 { font-size:.92rem; font-weight:700; color:var(--accent); margin-bottom:5px; }
+    .feat-card p  { font-size:.86rem; color:#444; margin:0; }
+    /* Comparison table */
+    table.info-table { width:100%; border-collapse:collapse; margin:14px 0; }
+    table.info-table th { background:#2d3436; color:#fff; padding:10px 14px; text-align:left; font-size:.85rem; }
+    table.info-table td { padding:10px 14px; border-bottom:1px solid #eee; font-size:.9rem; vertical-align:top; }
+    table.info-table tr:hover { background:#f0f0f0; }
+    .app-list { list-style:none; padding:0; display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+    .app-list li { display:flex; align-items:flex-start; gap:10px; font-size:.92rem; }
+    .app-list li::before { content:'▶'; color:var(--primary); font-size:.7rem; margin-top:5px; flex-shrink:0; }
+    footer { text-align:center; margin-top:40px; font-size:.78rem; color:#b2bec3; }
+    @media(max-width:680px){ body{padding:12px;} .feat-grid{grid-template-columns:1fr;} .card{padding:18px 16px;} }
+  </style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">&#8592; Back to Unit 2 Index</a>
+
+<div class="question-banner">
+  <div class="q-label">Question 8 &bull; Unit 2 – Tools &amp; Frameworks</div>
+  <div class="q-text">Write short note on PyTorch and Google Colab.</div>
+  <span class="q-marks">&#128221; 5 Marks</span>
+</div>
+
+<h1>PyTorch &amp; Google Colab</h1>
+<p class="subtitle">Deep learning framework + cloud notebook platform — with diagrams</p>
+
+<!-- ===== OVERVIEW ===== -->
+<div class="card">
+  <h2>Overview — How They Work Together</h2>
+  <div class="figure-box">
+    <div class="fig-title">Figure 1 — PyTorch + Colab Workflow</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 180" width="740" height="180">
+      <defs>
+        <marker id="arrPC" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0,8 3,0 6" fill="#636e72"/>
+        </marker>
+        <linearGradient id="colabG" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#fdcb6e"/><stop offset="100%" style="stop-color:#f39c12"/>
+        </linearGradient>
+        <linearGradient id="ptG" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ff7675"/><stop offset="100%" style="stop-color:#d63031"/>
+        </linearGradient>
+        <linearGradient id="gpuG" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#55efc4"/><stop offset="100%" style="stop-color:#00b894"/>
+        </linearGradient>
+        <linearGradient id="modelG" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#a29bfe"/><stop offset="100%" style="stop-color:#6c5ce7"/>
+        </linearGradient>
+      </defs>
+      <!-- Step boxes -->
+      <rect x="10"  y="50" width="140" height="70" rx="12" fill="url(#colabG)"/>
+      <text x="80"  y="78"  text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Google Colab</text>
+      <text x="80"  y="95"  text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Browser-based</text>
+      <text x="80"  y="110" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Jupyter Notebook</text>
+
+      <line x1="150" y1="85" x2="175" y2="85" stroke="#636e72" stroke-width="2" marker-end="url(#arrPC)"/>
+
+      <rect x="180" y="50" width="140" height="70" rx="12" fill="url(#ptG)"/>
+      <text x="250" y="78"  text-anchor="middle" font-size="13" font-weight="700" fill="#fff">PyTorch Code</text>
+      <text x="250" y="95"  text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Define model,</text>
+      <text x="250" y="110" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">loss, optimizer</text>
+
+      <line x1="320" y1="85" x2="345" y2="85" stroke="#636e72" stroke-width="2" marker-end="url(#arrPC)"/>
+
+      <rect x="350" y="50" width="150" height="70" rx="12" fill="url(#gpuG)"/>
+      <text x="425" y="78"  text-anchor="middle" font-size="13" font-weight="700" fill="#fff">GPU / TPU</text>
+      <text x="425" y="95"  text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Free CUDA GPU</text>
+      <text x="425" y="110" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">via Colab runtime</text>
+
+      <line x1="500" y1="85" x2="525" y2="85" stroke="#636e72" stroke-width="2" marker-end="url(#arrPC)"/>
+
+      <rect x="530" y="50" width="190" height="70" rx="12" fill="url(#modelG)"/>
+      <text x="625" y="78"  text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Trained Model</text>
+      <text x="625" y="95"  text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Weights saved to</text>
+      <text x="625" y="110" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Google Drive / export</text>
+
+      <!-- Bottom caption -->
+      <text x="370" y="150" text-anchor="middle" font-size="11" fill="#636e72">Write PyTorch in Colab → run on free GPU → save trained model</text>
+    </svg>
+    <div class="fig-caption">Colab provides the cloud environment; PyTorch provides the deep learning framework; GPU accelerates training.</div>
+  </div>
+</div>
+
+<!-- ===== PYTORCH ===== -->
+<div class="card">
+  <h2>PyTorch</h2>
+  <p><span class="keyword">PyTorch</span> is an open-source machine learning framework developed by <strong>Facebook's AI Research (FAIR)</strong> lab. It is widely used for deep learning due to its <span class="highlight">dynamic computation graph</span> which allows real-time changes to network architecture during training.</p>
+
+  <!-- SVG: Static vs Dynamic Graph -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 2 — Static Graph (TensorFlow) vs. Dynamic Graph (PyTorch)</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 220" width="700" height="220">
+      <defs>
+        <marker id="arrG" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+          <polygon points="0 0,7 2.5,0 5" fill="#636e72"/>
+        </marker>
+      </defs>
+
+      <!-- Static Graph side -->
+      <rect x="10" y="10" width="320" height="190" rx="10" fill="#fff0f0" stroke="#d63031" stroke-width="2"/>
+      <text x="170" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#d63031">Static Graph (Define-then-Run)</text>
+
+      <!-- Fixed nodes -->
+      <circle cx="80"  cy="90"  r="18" fill="#d63031" opacity=".8"/>
+      <circle cx="170" cy="70"  r="18" fill="#d63031" opacity=".8"/>
+      <circle cx="170" cy="110" r="18" fill="#d63031" opacity=".8"/>
+      <circle cx="260" cy="90"  r="18" fill="#d63031" opacity=".8"/>
+      <text x="80"  y="94"  text-anchor="middle" font-size="10" fill="#fff">x</text>
+      <text x="170" y="74"  text-anchor="middle" font-size="10" fill="#fff">h₁</text>
+      <text x="170" y="114" text-anchor="middle" font-size="10" fill="#fff">h₂</text>
+      <text x="260" y="94"  text-anchor="middle" font-size="10" fill="#fff">y</text>
+      <line x1="98"  y1="85"  x2="152" y2="75"  stroke="#d63031" stroke-width="1.5" marker-end="url(#arrG)"/>
+      <line x1="98"  y1="95"  x2="152" y2="105" stroke="#d63031" stroke-width="1.5" marker-end="url(#arrG)"/>
+      <line x1="188" y1="75"  x2="242" y2="88"  stroke="#d63031" stroke-width="1.5" marker-end="url(#arrG)"/>
+      <line x1="188" y1="105" x2="242" y2="92"  stroke="#d63031" stroke-width="1.5" marker-end="url(#arrG)"/>
+      <text x="170" y="150" text-anchor="middle" font-size="10" fill="#636e72">Graph compiled ONCE before running</text>
+      <text x="170" y="165" text-anchor="middle" font-size="10" fill="#636e72">Cannot change structure at runtime</text>
+      <text x="170" y="185" text-anchor="middle" font-size="10" fill="#d63031" font-weight="600">TensorFlow 1.x style</text>
+
+      <!-- Dynamic Graph side -->
+      <rect x="370" y="10" width="320" height="190" rx="10" fill="#f0fff8" stroke="#00b894" stroke-width="2"/>
+      <text x="530" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#00b894">Dynamic Graph (Define-by-Run)</text>
+
+      <!-- Nodes change shape -->
+      <circle cx="430" cy="90"  r="18" fill="#00b894" opacity=".8"/>
+      <circle cx="530" cy="70"  r="18" fill="#00b894" opacity=".8"/>
+      <circle cx="530" cy="115" r="14" fill="#00b894" opacity=".5" stroke-dasharray="4,3"/>
+      <circle cx="620" cy="90"  r="18" fill="#00b894" opacity=".8"/>
+      <text x="430" y="94"  text-anchor="middle" font-size="10" fill="#fff">x</text>
+      <text x="530" y="74"  text-anchor="middle" font-size="10" fill="#fff">h₁</text>
+      <text x="530" y="118" text-anchor="middle" font-size="9"  fill="#fff">h₂?</text>
+      <text x="620" y="94"  text-anchor="middle" font-size="10" fill="#fff">y</text>
+      <line x1="448" y1="85"  x2="512" y2="75"  stroke="#00b894" stroke-width="1.5" marker-end="url(#arrG)"/>
+      <line x1="448" y1="95"  x2="516" y2="110" stroke="#00b894" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrG)"/>
+      <line x1="548" y1="75"  x2="602" y2="88"  stroke="#00b894" stroke-width="1.5" marker-end="url(#arrG)"/>
+      <text x="530" y="150" text-anchor="middle" font-size="10" fill="#636e72">Graph built on-the-fly per forward pass</text>
+      <text x="530" y="165" text-anchor="middle" font-size="10" fill="#636e72">Can change structure at runtime</text>
+      <text x="530" y="185" text-anchor="middle" font-size="10" fill="#00b894" font-weight="600">PyTorch style ✔</text>
+    </svg>
+    <div class="fig-caption">PyTorch's dynamic graph allows adding/removing branches per input — ideal for research and variable-length sequences.</div>
+  </div>
+
+  <h3 style="margin:16px 0 10px; color:#e17055;">Key Features of PyTorch</h3>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <h4>Dynamic Computation Graph</h4>
+      <p>Graph is built at runtime — enables flexibility and easy debugging.</p>
+    </div>
+    <div class="feat-card">
+      <h4>Autograd (Auto Differentiation)</h4>
+      <p>Automatically computes gradients for backpropagation using the <code>autograd</code> module.</p>
+    </div>
+    <div class="feat-card">
+      <h4>GPU Acceleration (CUDA)</h4>
+      <p>Models run on NVIDIA GPUs via CUDA, achieving massive speedups.</p>
+    </div>
+    <div class="feat-card">
+      <h4>Pythonic API</h4>
+      <p>Integrates seamlessly with Python — uses familiar NumPy-like syntax.</p>
+    </div>
+    <div class="feat-card">
+      <h4>Rich Ecosystem</h4>
+      <p>torchvision, torchtext, torchaudio — libraries for CV, NLP, audio.</p>
+    </div>
+    <div class="feat-card">
+      <h4>Large Community</h4>
+      <p>Extensive documentation, tutorials, and pre-trained models (HuggingFace, etc.).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COLAB ===== -->
+<div class="card">
+  <h2>Google Colab</h2>
+  <p><span class="keyword">Google Colab</span> (Google Collaboratory) is a <span class="highlight">free, cloud-based platform</span> for writing and executing Python code in a Jupyter Notebook environment. No installation is required — everything runs in the browser.</p>
+
+  <!-- SVG: Colab architecture -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 3 — Google Colab Architecture</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200" width="700" height="200">
+      <defs>
+        <marker id="arrColab" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+          <polygon points="0 0,7 2.5,0 5" fill="#636e72"/>
+        </marker>
+        <linearGradient id="browserG" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#74b9ff"/><stop offset="100%" style="stop-color:#0984e3"/>
+        </linearGradient>
+        <linearGradient id="driveG" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#fdcb6e"/><stop offset="100%" style="stop-color:#f39c12"/>
+        </linearGradient>
+        <linearGradient id="gpuCG" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#55efc4"/><stop offset="100%" style="stop-color:#00b894"/>
+        </linearGradient>
+      </defs>
+
+      <!-- User (browser) -->
+      <rect x="10" y="60" width="130" height="80" rx="10" fill="url(#browserG)"/>
+      <text x="75" y="90"  text-anchor="middle" font-size="20">&#128187;</text>
+      <text x="75" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">User Browser</text>
+      <text x="75" y="128" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Jupyter UI</text>
+
+      <!-- Double arrow: browser ↔ Colab server -->
+      <line x1="140" y1="100" x2="195" y2="100" stroke="#636e72" stroke-width="2" marker-end="url(#arrColab)"/>
+      <line x1="195" y1="107" x2="140" y2="107" stroke="#636e72" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrColab)"/>
+      <text x="168" y="92" text-anchor="middle" font-size="9" fill="#636e72">HTTP</text>
+
+      <!-- Colab Server -->
+      <rect x="200" y="40" width="160" height="120" rx="10" fill="#fdf2e9" stroke="#e17055" stroke-width="2"/>
+      <text x="280" y="65"  text-anchor="middle" font-size="13" font-weight="700" fill="#e17055">Colab Server</text>
+      <text x="280" y="85"  text-anchor="middle" font-size="11" fill="#636e72">Python Kernel</text>
+      <text x="280" y="103" text-anchor="middle" font-size="11" fill="#636e72">Pre-installed libs:</text>
+      <text x="280" y="118" text-anchor="middle" font-size="10" fill="#636e72">PyTorch, TF, NumPy</text>
+      <text x="280" y="133" text-anchor="middle" font-size="10" fill="#636e72">Pandas, Matplotlib</text>
+      <text x="280" y="150" text-anchor="middle" font-size="10" fill="#e17055">Google Cloud VM</text>
+
+      <!-- Arrow to GPU -->
+      <line x1="360" y1="100" x2="415" y2="100" stroke="#636e72" stroke-width="2" marker-end="url(#arrColab)"/>
+
+      <!-- GPU/TPU -->
+      <rect x="420" y="60" width="130" height="80" rx="10" fill="url(#gpuCG)"/>
+      <text x="485" y="90"  text-anchor="middle" font-size="20">&#9889;</text>
+      <text x="485" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">GPU / TPU</text>
+      <text x="485" y="128" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Free CUDA access</text>
+
+      <!-- Arrow to Drive -->
+      <line x1="550" y1="100" x2="600" y2="100" stroke="#636e72" stroke-width="2" marker-end="url(#arrColab)"/>
+
+      <!-- Google Drive -->
+      <rect x="605" y="60" width="85" height="80" rx="10" fill="url(#driveG)"/>
+      <text x="648" y="90"  text-anchor="middle" font-size="18">&#128190;</text>
+      <text x="648" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Google</text>
+      <text x="648" y="125" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Drive</text>
+    </svg>
+    <div class="fig-caption">Colab runs on Google Cloud VMs — code is written in a browser, executed on a remote GPU/TPU, and files saved to Google Drive.</div>
+  </div>
+
+  <h3 style="margin:16px 0 10px; color:#f39c12;">Key Features of Google Colab</h3>
+  <div class="feat-grid">
+    <div class="feat-card colab">
+      <h4>Free GPU &amp; TPU Access</h4>
+      <p>Free access to NVIDIA GPUs and Google TPUs — ideal for training deep learning models.</p>
+    </div>
+    <div class="feat-card colab">
+      <h4>Cloud-Based, No Setup</h4>
+      <p>No installation required — runs entirely in the browser on Google Cloud infrastructure.</p>
+    </div>
+    <div class="feat-card colab">
+      <h4>Google Drive Integration</h4>
+      <p>Mount Google Drive directly to save and access datasets and notebooks.</p>
+    </div>
+    <div class="feat-card colab">
+      <h4>Real-Time Collaboration</h4>
+      <p>Multiple users can work on the same notebook simultaneously, like Google Docs.</p>
+    </div>
+    <div class="feat-card colab">
+      <h4>Pre-installed Libraries</h4>
+      <p>TensorFlow, PyTorch, NumPy, Pandas, Matplotlib — ready to use out of the box.</p>
+    </div>
+    <div class="feat-card colab">
+      <h4>Interactive Notebooks</h4>
+      <p>Combines code, rich text, images, and output — ideal for tutorials and presentations.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COMPARISON ===== -->
+<div class="card">
+  <h2>PyTorch vs. Google Colab — Comparison</h2>
+  <table class="info-table">
+    <thead><tr><th>Aspect</th><th>PyTorch</th><th>Google Colab</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Type</strong></td><td>Deep learning framework</td><td>Cloud notebook platform</td></tr>
+      <tr><td><strong>Purpose</strong></td><td>Build &amp; train neural network models</td><td>Provide environment to write &amp; run code</td></tr>
+      <tr><td><strong>Created by</strong></td><td>Facebook AI Research (FAIR)</td><td>Google</td></tr>
+      <tr><td><strong>Language</strong></td><td>Python (C++ backend)</td><td>Python (Jupyter-based)</td></tr>
+      <tr><td><strong>Hardware</strong></td><td>Uses local GPU (CUDA) or cloud GPU</td><td>Provides free cloud GPU/TPU</td></tr>
+      <tr><td><strong>Installation</strong></td><td>Requires local install (<code>pip install torch</code>)</td><td>No install — browser only</td></tr>
+      <tr><td><strong>Best for</strong></td><td>Research, model development, deployment</td><td>Learning, prototyping, collaboration</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>DL Unit 2 &mdash; Q8 &mdash; PyTorch &amp; Google Colab &mdash; In-Sem Exam Preparation</footer>
+</body>
+</html>

@@ -13,7 +13,7 @@
       --shadow: 0 2px 12px rgba(0,0,0,.08);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: #2d3436; padding: 24px; line-height: 1.7; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: #2d3436; padding: 24px; line-height: 1.8; font-size: 15px; }
 
     /* Back nav */
     .back-link { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--primary); font-size: .9rem; font-weight: 600; margin-bottom: 18px; }
@@ -51,7 +51,18 @@
     .step-card h4 { display: inline; color: #2d3436; font-size: .95rem; }
     .step-card p { font-size: .88rem; margin: 8px 0 0; }
 
-    .formula-box { background: #fdf2e9; border-left: 4px solid #e17055; border-radius: 6px; padding: 14px 20px; margin: 10px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: .9rem; color: #2d3436; }
+    .formula-box { background: #fdf2e9; border-left: 4px solid #e17055; border-radius: 6px; padding: 16px 22px; margin: 12px 0; font-size: .95rem; color: #2d3436; }
+    .math { font-family: 'Cambria Math', 'Latin Modern Math', 'STIX Two Math', Georgia, serif; font-style: italic; font-size: 1.08em; letter-spacing: .3px; }
+    .math-block { display: block; font-family: 'Cambria Math', 'Latin Modern Math', 'STIX Two Math', Georgia, serif; font-style: italic; font-size: 1.15em; text-align: center; padding: 10px 0; letter-spacing: .3px; line-height: 1.9; }
+    .math-block .label { font-style: normal; font-weight: 700; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .85em; color: #e17055; margin-right: 6px; }
+    .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 2px; }
+    .frac .num, .frac .den { font-size: .85em; line-height: 1.2; text-align: center; padding: 0 3px; }
+    .frac .num { border-bottom: 1.5px solid #2d3436; padding-bottom: 2px; }
+    .frac .den { padding-top: 2px; }
+    .piecewise-tbl { border-collapse: collapse; margin: 6px auto; }
+    .piecewise-tbl td { padding: 3px 10px; font-family: 'Cambria Math', 'Latin Modern Math', Georgia, serif; font-style: italic; font-size: 1.05em; }
+    .piecewise-tbl .cond { font-style: normal; color: #636e72; font-size: .92em; }
+    .piecewise-tbl .brace { font-size: 2.2em; font-style: normal; vertical-align: middle; color: #6c5ce7; font-weight: 300; }
 
     .key-points { background: #e8f8f5; border-left: 4px solid #00b894; border-radius: 6px; padding: 16px 20px; margin: 14px 0; }
     .key-points strong { color: #00b894; }
@@ -217,10 +228,15 @@
   </p>
 
   <div class="formula-box">
-    <strong>f(Y_in) =</strong><br/>
-    &nbsp;&nbsp;+1 &nbsp; if &nbsp; Y_in &gt; θ<br/>
-    &nbsp;&nbsp;&nbsp;0 &nbsp; if &nbsp; −θ ≤ Y_in ≤ θ<br/>
-    &nbsp;&nbsp;−1 &nbsp; if &nbsp; Y_in &lt; −θ
+    <table class="piecewise-tbl"><tr>
+      <td rowspan="3"><span class="math">f</span>(<span class="math">Y</span><sub>in</sub>) =</td>
+      <td rowspan="3" class="brace">{</td>
+      <td><span class="math">+1</span></td><td class="cond">if &nbsp; <span class="math">Y</span><sub>in</sub> &gt; <span class="math">θ</span></td>
+    </tr><tr>
+      <td><span class="math">&nbsp;0</span></td><td class="cond">if &nbsp; −<span class="math">θ</span> ≤ <span class="math">Y</span><sub>in</sub> ≤ <span class="math">θ</span></td>
+    </tr><tr>
+      <td><span class="math">−1</span></td><td class="cond">if &nbsp; <span class="math">Y</span><sub>in</sub> &lt; −<span class="math">θ</span></td>
+    </tr></table>
   </div>
 
   <!-- SVG: Binary Step Function -->
@@ -310,9 +326,9 @@
       <h4>Net Input Calculation</h4>
       <p>Compute the <strong>net input</strong> (weighted sum) using the formula:</p>
       <div class="formula-box" style="margin-top:8px;">
-        Y_in = b + Σ(xᵢ · wᵢ)
+        <span class="math-block"><span class="math">Y</span><sub>in</sub> = <span class="math">b</span> + <span style="font-size:1.15em;">Σ</span><sub><span class="math">i</span></sub> (<span class="math">x<sub>i</sub></span> · <span class="math">w<sub>i</sub></span>)</span>
       </div>
-      <p style="margin-top:6px;">where xᵢ are input values, wᵢ are corresponding weights, and b is the bias.</p>
+      <p style="margin-top:6px;">where <span class="math">x<sub>i</sub></span> are input values, <span class="math">w<sub>i</sub></span> are corresponding weights, and <span class="math">b</span> is the bias.</p>
     </div>
 
     <div class="step-card">
@@ -320,9 +336,9 @@
       <h4>Apply Activation Function</h4>
       <p>Use the <strong>activation function</strong> (binary step function) to calculate the output:</p>
       <div class="formula-box" style="margin-top:8px;">
-        y = f(Y_in)
+        <span class="math-block"><span class="math">y</span> = <span class="math">f</span>(<span class="math">Y</span><sub>in</sub>)</span>
       </div>
-      <p style="margin-top:6px;">where f is the binary step activation function with threshold θ.</p>
+      <p style="margin-top:6px;">where <span class="math">f</span> is the binary step activation function with threshold <span class="math">θ</span>.</p>
     </div>
 
     <div class="step-card">
@@ -336,10 +352,10 @@
       <h4>Weight &amp; Bias Adjustment</h4>
       <p>If there is an error (y ≠ t), update the weights and bias using the <span class="keyword">Perceptron Learning Rule</span>:</p>
       <div class="formula-box" style="margin-top:8px;">
-        wᵢ(new) = wᵢ(old) + η · xᵢ · t<br/>
-        b(new) = b(old) + η · t
+        <span class="math-block"><span class="math">w<sub>i</sub></span><sup>(new)</sup> = <span class="math">w<sub>i</sub></span><sup>(old)</sup> + <span class="math">η</span> · <span class="math">x<sub>i</sub></span> · <span class="math">t</span></span>
+        <span class="math-block"><span class="math">b</span><sup>(new)</sup> = <span class="math">b</span><sup>(old)</sup> + <span class="math">η</span> · <span class="math">t</span></span>
       </div>
-      <p style="margin-top:6px;">Where η is the learning rate, t is the target value (+1 or −1), and xᵢ is the input value.</p>
+      <p style="margin-top:6px;">Where <span class="math">η</span> is the learning rate, <span class="math">t</span> is the target value (+1 or −1), and <span class="math">x<sub>i</sub></span> is the input value.</p>
     </div>
 
     <div class="step-card">
@@ -510,7 +526,7 @@
       <tr>
         <td><strong>Net Input</strong></td>
         <td>Y_in</td>
-        <td>b + Σ(xᵢ · wᵢ) — weighted sum of inputs plus bias</td>
+        <td><span class="math">b</span> + Σ(<span class="math">x<sub>i</sub></span> · <span class="math">w<sub>i</sub></span>) — weighted sum of inputs plus bias</td>
       </tr>
       <tr>
         <td><strong>Activation</strong></td>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Q7 – Sentiment Analysis | DL Unit 2</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#2d3436; --primary:#0984e3; --shadow:0 2px 12px rgba(0,0,0,.08); }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:#2d3436; padding:24px; line-height:1.8; font-size:15px; }
+    .back-link { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--primary); font-size:.9rem; font-weight:600; margin-bottom:18px; }
+    .back-link:hover { text-decoration:underline; }
+    .question-banner { background:linear-gradient(135deg,#6c5ce7,#0984e3); color:#fff; border-radius:14px; padding:28px 32px; margin-bottom:28px; box-shadow:0 4px 20px rgba(108,92,231,.25); }
+    .question-banner .q-label { font-size:.8rem; text-transform:uppercase; letter-spacing:1.5px; opacity:.85; margin-bottom:6px; }
+    .question-banner .q-text { font-size:1.2rem; font-weight:700; line-height:1.5; }
+    .question-banner .q-marks { display:inline-block; background:rgba(255,255,255,.2); padding:4px 14px; border-radius:20px; font-size:.82rem; margin-top:10px; font-weight:600; }
+    h1 { text-align:center; font-size:1.5rem; margin-bottom:4px; color:var(--accent); }
+    .subtitle { text-align:center; color:#636e72; margin-bottom:30px; font-size:.9rem; }
+    .card { background:var(--card); border-radius:14px; box-shadow:var(--shadow); padding:28px 32px; margin-bottom:26px; }
+    .card h2 { font-size:1.18rem; color:var(--primary); margin-bottom:14px; border-bottom:2px solid #dfe6e9; padding-bottom:8px; }
+    .card p { font-size:.94rem; margin-bottom:10px; text-align:justify; }
+    .highlight { background:#ffeaa7; padding:2px 6px; border-radius:4px; font-weight:600; }
+    .keyword { color:#d63031; font-weight:600; }
+    .figure-box { background:#f8f9fa; border:2px solid #dfe6e9; border-radius:12px; padding:20px; margin:18px 0; text-align:center; overflow-x:auto; }
+    .figure-box .fig-title { font-weight:700; color:#2d3436; margin-bottom:12px; font-size:.95rem; }
+    .figure-box svg { max-width:100%; height:auto; }
+    .figure-box .fig-caption { font-size:.82rem; color:#636e72; margin-top:12px; font-style:italic; }
+    /* Type blocks */
+    .type-block { display:grid; grid-template-columns:1fr 240px; gap:20px; align-items:start; border-left:4px solid var(--primary); padding:16px 18px; background:#f0f4ff; border-radius:0 10px 10px 0; margin-bottom:16px; }
+    .type-block:last-child { margin-bottom:0; }
+    .type-text h3 { font-size:.98rem; font-weight:700; margin-bottom:7px; color:var(--accent); }
+    .type-text p { font-size:.9rem; color:#444; margin-bottom:6px; }
+    .type-text .eg { font-style:italic; font-size:.85rem; color:#636e72; background:#fff; border-left:3px solid #0984e3; padding:4px 10px; border-radius:0 6px 6px 0; margin-top:6px; }
+    .type-svg { background:#fff; border-radius:10px; border:1px solid #dfe6e9; padding:10px; text-align:center; }
+    .type-svg svg { width:100%; height:auto; }
+    .type-svg .svg-cap { font-size:.72rem; color:#636e72; margin-top:4px; font-style:italic; }
+    .app-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:14px; }
+    .app-card { background:#f0f4ff; border-radius:10px; padding:14px; text-align:center; }
+    .app-card .icon { font-size:1.8rem; margin-bottom:6px; }
+    .app-card h4 { font-size:.88rem; color:var(--primary); margin-bottom:4px; }
+    .app-card p { font-size:.8rem; color:#636e72; margin:0; text-align:center; }
+    footer { text-align:center; margin-top:40px; font-size:.78rem; color:#b2bec3; }
+    @media(max-width:680px){ body{padding:12px;} .type-block{grid-template-columns:1fr;} .app-grid{grid-template-columns:1fr 1fr;} .card{padding:18px 16px;} }
+  </style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">&#8592; Back to Unit 2 Index</a>
+
+<div class="question-banner">
+  <div class="q-label">Question 7 &bull; Unit 2 – NLP / Sentiment Analysis</div>
+  <div class="q-text">Explain Sentiment Analysis and its types in detail.</div>
+  <span class="q-marks">&#128221; 5 Marks</span>
+</div>
+
+<h1>Sentiment Analysis &amp; Its Types</h1>
+<p class="subtitle">Opinion mining — definitions, types, and diagrams</p>
+
+<!-- ===== DEFINITION ===== -->
+<div class="card">
+  <h2>What is Sentiment Analysis?</h2>
+  <p><span class="keyword">Sentiment Analysis</span> (also called <em>opinion mining</em>) is a technique in <span class="highlight">Natural Language Processing (NLP)</span> that analyses text to determine the sentiment or emotional tone behind it — whether it is <strong>positive, negative, or neutral</strong>.</p>
+  <p>It is widely used in customer feedback analysis, social media monitoring, brand reputation tracking, and market research.</p>
+
+  <!-- SVG: Pipeline -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 1 — Sentiment Analysis Pipeline</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 150" width="720" height="150">
+      <defs>
+        <marker id="arrS" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0,8 3,0 6" fill="#636e72"/>
+        </marker>
+        <linearGradient id="sg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#74b9ff"/><stop offset="100%" style="stop-color:#0984e3"/></linearGradient>
+        <linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#a29bfe"/><stop offset="100%" style="stop-color:#6c5ce7"/></linearGradient>
+        <linearGradient id="sg3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fdcb6e"/><stop offset="100%" style="stop-color:#f39c12"/></linearGradient>
+        <linearGradient id="sg4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#55efc4"/><stop offset="100%" style="stop-color:#00b894"/></linearGradient>
+      </defs>
+      <!-- Step 1: Raw Text -->
+      <rect x="10"  y="40" width="140" height="60" rx="10" fill="url(#sg1)"/>
+      <text x="80"  y="66" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Raw Text</text>
+      <text x="80"  y="83" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">"I love this product!"</text>
+      <line x1="150" y1="70" x2="178" y2="70" stroke="#636e72" stroke-width="2" marker-end="url(#arrS)"/>
+
+      <!-- Step 2: Preprocessing -->
+      <rect x="183" y="40" width="140" height="60" rx="10" fill="url(#sg2)"/>
+      <text x="253" y="63" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Preprocessing</text>
+      <text x="253" y="79" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Tokenise, Remove</text>
+      <text x="253" y="92" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">stopwords, Stem</text>
+      <line x1="323" y1="70" x2="351" y2="70" stroke="#636e72" stroke-width="2" marker-end="url(#arrS)"/>
+
+      <!-- Step 3: Model / Classifier -->
+      <rect x="356" y="40" width="140" height="60" rx="10" fill="url(#sg3)"/>
+      <text x="426" y="63" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Model / Classifier</text>
+      <text x="426" y="79" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">ML / Deep Learning</text>
+      <text x="426" y="92" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Lexicon-based</text>
+      <line x1="496" y1="70" x2="524" y2="70" stroke="#636e72" stroke-width="2" marker-end="url(#arrS)"/>
+
+      <!-- Step 4: Sentiment Output -->
+      <rect x="529" y="40" width="170" height="60" rx="10" fill="url(#sg4)"/>
+      <text x="614" y="63" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Sentiment Output</text>
+      <text x="614" y="79" text-anchor="middle" font-size="12" fill="#fff" opacity=".9">😊 Positive</text>
+      <text x="614" y="95" text-anchor="middle" font-size="12" fill="#fff" opacity=".9">😐 Neutral  😠 Negative</text>
+    </svg>
+    <div class="fig-caption">Text goes through preprocessing, a classifier model, and produces a sentiment label as output.</div>
+  </div>
+</div>
+
+<!-- ===== TYPES ===== -->
+<div class="card">
+  <h2>Types of Sentiment Analysis</h2>
+
+  <!-- 1. Graded -->
+  <div class="type-block">
+    <div class="type-text">
+      <h3>1. Graded Sentiment Analysis</h3>
+      <p>Goes beyond simple positive/negative. Assigns a <strong>degree of polarity</strong> to the sentiment across 5 levels.</p>
+      <div class="eg">"I absolutely love this!" → Very Positive<br>"The product is okay." → Neutral<br>"I hate this!" → Very Negative</div>
+      <p style="margin-top:6px;">Use case: interpreting 5-star ratings or surveys.</p>
+    </div>
+    <div class="type-svg">
+      <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- 5-bar scale -->
+        <rect x="10"  y="110" width="30" height="20" fill="#d63031" rx="3"/>
+        <rect x="50"  y="90"  width="30" height="40" fill="#e17055" rx="3"/>
+        <rect x="90"  y="75"  width="30" height="55" fill="#636e72" rx="3"/>
+        <rect x="130" y="50"  width="30" height="80" fill="#00b894" rx="3"/>
+        <rect x="170" y="20"  width="30" height="110" fill="#27ae60" rx="3"/>
+        <text x="25"  y="143" text-anchor="middle" font-size="8" fill="#d63031">Very Neg</text>
+        <text x="65"  y="143" text-anchor="middle" font-size="8" fill="#e17055">Negative</text>
+        <text x="105" y="143" text-anchor="middle" font-size="8" fill="#636e72">Neutral</text>
+        <text x="145" y="143" text-anchor="middle" font-size="8" fill="#00b894">Positive</text>
+        <text x="185" y="143" text-anchor="middle" font-size="8" fill="#27ae60">Very Pos</text>
+        <line x1="5" y1="130" x2="215" y2="130" stroke="#ddd" stroke-width="1"/>
+      </svg>
+      <div class="svg-cap">5-level polarity scale</div>
+    </div>
+  </div>
+
+  <!-- 2. Emotion Detection -->
+  <div class="type-block">
+    <div class="type-text">
+      <h3>2. Emotion Detection</h3>
+      <p>Identifies <strong>specific emotions</strong> such as happiness, anger, sadness, or frustration using lexicons or ML models.</p>
+      <div class="eg">"I am so happy!" → Happiness<br>"This is frustrating!" → Frustration</div>
+      <p style="margin-top:6px;">Use case: customer service, mental health analysis.</p>
+    </div>
+    <div class="type-svg">
+      <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Emotion wheel segments approximated with circles -->
+        <circle cx="110" cy="75" r="60" fill="none" stroke="#eee" stroke-width="1"/>
+        <!-- Emotions as labelled sectors approximated with arcs -->
+        <path d="M110,75 L170,75 A60,60 0 0,0 140,23 Z" fill="#ffeaa7" stroke="#fff" stroke-width="2"/>
+        <text x="152" y="58" font-size="9" fill="#f39c12" text-anchor="middle">Happy</text>
+        <path d="M110,75 L140,23 A60,60 0 0,0 80,23 Z" fill="#ff7675" stroke="#fff" stroke-width="2"/>
+        <text x="110" y="38" font-size="9" fill="#d63031" text-anchor="middle">Angry</text>
+        <path d="M110,75 L80,23 A60,60 0 0,0 50,75 Z" fill="#74b9ff" stroke="#fff" stroke-width="2"/>
+        <text x="68" y="56" font-size="9" fill="#0984e3" text-anchor="middle">Sad</text>
+        <path d="M110,75 L50,75 A60,60 0 0,0 80,127 Z" fill="#a29bfe" stroke="#fff" stroke-width="2"/>
+        <text x="68" y="108" font-size="9" fill="#6c5ce7" text-anchor="middle">Fear</text>
+        <path d="M110,75 L80,127 A60,60 0 0,0 140,127 Z" fill="#55efc4" stroke="#fff" stroke-width="2"/>
+        <text x="110" y="118" font-size="9" fill="#00b894" text-anchor="middle">Surprised</text>
+        <path d="M110,75 L140,127 A60,60 0 0,0 170,75 Z" fill="#fdcb6e" stroke="#fff" stroke-width="2"/>
+        <text x="152" y="108" font-size="9" fill="#f39c12" text-anchor="middle">Disgust</text>
+        <circle cx="110" cy="75" r="18" fill="#fff" stroke="#ddd" stroke-width="1"/>
+        <text x="110" y="79" text-anchor="middle" font-size="9" fill="#636e72" font-weight="700">Emotion</text>
+      </svg>
+      <div class="svg-cap">Emotion wheel</div>
+    </div>
+  </div>
+
+  <!-- 3. Aspect-Based -->
+  <div class="type-block">
+    <div class="type-text">
+      <h3>3. Aspect-Based Sentiment Analysis</h3>
+      <p>Identifies sentiments related to <strong>specific aspects or features</strong> of a product or service rather than overall sentiment.</p>
+      <div class="eg">"Battery life is too short." → Negative (battery)<br>"Camera quality is amazing!" → Positive (camera)</div>
+      <p style="margin-top:6px;">Use case: product reviews, feature-level analysis.</p>
+    </div>
+    <div class="type-svg">
+      <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Phone outline -->
+        <rect x="80" y="10" width="60" height="100" rx="8" fill="#dfe6e9" stroke="#636e72" stroke-width="2"/>
+        <rect x="85" y="20" width="50" height="60" rx="3" fill="#2d3436"/>
+        <circle cx="110" cy="100" r="5" fill="#636e72"/>
+        <!-- Aspect labels with sentiment -->
+        <line x1="140" y1="35" x2="170" y2="30" stroke="#d63031" stroke-width="1.5"/>
+        <text x="175" y="33" font-size="9" fill="#d63031" font-weight="600">Battery ✗</text>
+        <line x1="140" y1="55" x2="170" y2="55" stroke="#00b894" stroke-width="1.5"/>
+        <text x="175" y="58" font-size="9" fill="#00b894" font-weight="600">Camera ✓</text>
+        <line x1="140" y1="75" x2="170" y2="80" stroke="#f39c12" stroke-width="1.5"/>
+        <text x="175" y="83" font-size="9" fill="#f39c12" font-weight="600">Price ~</text>
+        <line x1="80" y1="45" x2="50" y2="35" stroke="#00b894" stroke-width="1.5"/>
+        <text x="5"  y="38" font-size="9" fill="#00b894" font-weight="600">Screen ✓</text>
+      </svg>
+      <div class="svg-cap">Per-feature sentiment labels</div>
+    </div>
+  </div>
+
+  <!-- 4. Multilingual -->
+  <div class="type-block">
+    <div class="type-text">
+      <h3>4. Multilingual Sentiment Analysis</h3>
+      <p>Analyses sentiments expressed in <strong>multiple languages</strong>. Requires language detection, translation/multilingual models, and language-specific lexicons.</p>
+      <div class="eg">"Este producto es increíble." (Spanish) → Positive</div>
+      <p style="margin-top:6px;">Use case: global businesses with multilingual feedback.</p>
+    </div>
+    <div class="type-svg">
+      <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Globe outline -->
+        <circle cx="110" cy="75" r="55" fill="#f0f4ff" stroke="#0984e3" stroke-width="2"/>
+        <ellipse cx="110" cy="75" rx="25" ry="55" fill="none" stroke="#0984e3" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="55" y1="75" x2="165" y2="75" stroke="#0984e3" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="60" y1="48" x2="160" y2="48" stroke="#0984e3" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="60" y1="102" x2="160" y2="102" stroke="#0984e3" stroke-width="1" stroke-dasharray="3,4"/>
+        <!-- Language labels -->
+        <text x="110" y="40" text-anchor="middle" font-size="10" fill="#d63031" font-weight="700">EN 😊</text>
+        <text x="70"  y="72" text-anchor="middle" font-size="10" fill="#6c5ce7" font-weight="700">ES 😊</text>
+        <text x="150" y="72" text-anchor="middle" font-size="10" fill="#00b894" font-weight="700">FR 😊</text>
+        <text x="90"  y="100" text-anchor="middle" font-size="10" fill="#f39c12" font-weight="700">DE 😊</text>
+        <text x="135" y="108" text-anchor="middle" font-size="10" fill="#e17055" font-weight="700">JP 😊</text>
+      </svg>
+      <div class="svg-cap">Sentiment across languages</div>
+    </div>
+  </div>
+
+  <!-- 5. Fine-Grained -->
+  <div class="type-block">
+    <div class="type-text">
+      <h3>5. Fine-Grained Sentiment Analysis</h3>
+      <p>Provides detailed, <strong>fine-grained categories</strong> (Very Positive → Very Negative, often 5 classes like star ratings). Similar to graded but more structured.</p>
+      <div class="eg">"Extremely satisfied with service!" → Very Positive (5★)<br>"Service was okay, not great." → Neutral (3★)</div>
+    </div>
+    <div class="type-svg">
+      <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Star rating visual -->
+        <text x="110" y="35" text-anchor="middle" font-size="11" fill="#636e72" font-weight="600">Fine-Grained Rating</text>
+        <!-- 5 stars rows -->
+        <text x="20" y="60"  font-size="14" fill="#f39c12">★★★★★</text>
+        <text x="140" y="60" font-size="10" fill="#27ae60">Very Positive</text>
+        <text x="20" y="80"  font-size="14" fill="#f39c12">★★★★☆</text>
+        <text x="140" y="80" font-size="10" fill="#00b894">Positive</text>
+        <text x="20" y="100" font-size="14" fill="#f39c12">★★★☆☆</text>
+        <text x="140" y="100" font-size="10" fill="#636e72">Neutral</text>
+        <text x="20" y="120" font-size="14" fill="#ddd">★★☆☆☆</text>
+        <text x="140" y="120" font-size="10" fill="#e17055">Negative</text>
+        <text x="20" y="140" font-size="14" fill="#ddd">★☆☆☆☆</text>
+        <text x="140" y="140" font-size="10" fill="#d63031">Very Negative</text>
+      </svg>
+      <div class="svg-cap">5-star fine-grained scale</div>
+    </div>
+  </div>
+
+  <!-- 6. Intent-Based -->
+  <div class="type-block">
+    <div class="type-text">
+      <h3>6. Intent-Based Sentiment Analysis</h3>
+      <p>Focuses on identifying the <strong>intent behind the text</strong> — whether the user is interested, urgent, neutral, etc., rather than just polarity.</p>
+      <div class="eg">"I need this product immediately!" → Urgent<br>"I might consider buying this later." → Interested</div>
+      <p style="margin-top:6px;">Use case: marketing campaigns, customer service, lead generation.</p>
+    </div>
+    <div class="type-svg">
+      <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Text bubble -->
+        <rect x="10" y="10" width="150" height="50" rx="10" fill="#ffeaa7" stroke="#f39c12" stroke-width="2"/>
+        <polygon points="50,60 65,60 58,75" fill="#ffeaa7" stroke="#f39c12" stroke-width="1"/>
+        <text x="85" y="32" text-anchor="middle" font-size="11" fill="#2d3436">"I need this</text>
+        <text x="85" y="48" text-anchor="middle" font-size="11" fill="#2d3436">immediately!"</text>
+        <!-- Arrow down -->
+        <line x1="58" y1="78" x2="58" y2="100" stroke="#636e72" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <!-- Intent labels -->
+        <rect x="10"  y="105" width="55" height="28" rx="6" fill="#d63031"/>
+        <text x="38"  y="122" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">URGENT</text>
+        <rect x="75"  y="105" width="55" height="28" rx="6" fill="#0984e3"/>
+        <text x="102" y="122" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">BUY</text>
+        <rect x="140" y="105" width="70" height="28" rx="6" fill="#636e72"/>
+        <text x="175" y="122" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">INTERESTED</text>
+      </svg>
+      <div class="svg-cap">Intent classification from text</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== APPLICATIONS ===== -->
+<div class="card">
+  <h2>Applications of Sentiment Analysis</h2>
+  <div class="app-grid">
+    <div class="app-card">
+      <div class="icon">&#128172;</div>
+      <h4>Customer Feedback</h4>
+      <p>Analyse reviews &amp; surveys to understand satisfaction</p>
+    </div>
+    <div class="app-card">
+      <div class="icon">&#128240;</div>
+      <h4>Brand Monitoring</h4>
+      <p>Track public sentiment about a brand in real-time</p>
+    </div>
+    <div class="app-card">
+      <div class="icon">&#128200;</div>
+      <h4>Market Research</h4>
+      <p>Predict trends and consumer behaviour</p>
+    </div>
+    <div class="app-card">
+      <div class="icon">&#128241;</div>
+      <h4>Social Media</h4>
+      <p>Analyse tweets, posts, comments for public opinion</p>
+    </div>
+    <div class="app-card">
+      <div class="icon">&#127973;</div>
+      <h4>Healthcare</h4>
+      <p>Assess patient feedback and emotional well-being</p>
+    </div>
+    <div class="app-card">
+      <div class="icon">&#127963;</div>
+      <h4>Political Analysis</h4>
+      <p>Gauge sentiment about candidates or policies</p>
+    </div>
+  </div>
+</div>
+
+<footer>DL Unit 2 &mdash; Q7 &mdash; Sentiment Analysis &mdash; In-Sem Exam Preparation</footer>
+</body>
+</html>
