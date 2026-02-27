@@ -1,1 +1,175 @@
 What is the Loss function? Enlist and Explain different Loss functions used in Neural Network
+What is a Loss Function? ​
+A loss function is a mathematical function that measures the difference between the predicted output of a neural network and the actual target value. ​ It quantifies the error or deviation of the model's predictions from the true values. ​ The goal of training a neural network is to minimize this loss, thereby improving the accuracy of the model. ​
+Loss functions are crucial in guiding the optimization process during training. ​ They help the model learn by providing feedback on how well it is performing and how it can adjust its parameters (weights and biases) to reduce the error. ​
+
+Types of Loss Functions in Neural Networks ​
+
+Mean Squared Error (MSE):
+
+Definition:
+%%%
+MSE = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2 ​
+%%%
+Where yi is the actual value, y^i is the predicted value, and N is the number of data points.
+Description: Measures the average squared difference between the actual and predicted values. ​ It is commonly used for regression tasks. ​
+Advantages:
+
+Easy to interpret. ​
+Penalizes larger errors more heavily. ​
+
+
+Disadvantages:
+
+Not robust to outliers. ​
+Error unit is squared, which may not be intuitive. ​
+
+
+
+
+
+
+
+Mean Absolute Error (MAE):
+
+Definition:
+%%%
+MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i ​|
+%%%
+Description: Measures the average absolute difference between actual and predicted values. It is also used for regression tasks. ​
+Advantages:
+
+Robust to outliers.
+Provides a more intuitive measure of error. ​
+
+
+Disadvantages:
+
+May not penalize large errors as strongly as MSE.
+
+
+
+
+
+
+
+Cross-Entropy Loss:
+
+Definition:
+L=−1N∑i=1N[yilog⁡(y^i)+(1−yi)log⁡(1−y^i)]
+Description: Used for classification tasks, especially binary classification. ​ It measures the difference between the predicted probability distribution and the actual labels. ​
+Advantages:
+
+Works well for probabilistic models. ​
+Encourages the predicted probability to be close to the actual label. ​
+
+
+Disadvantages:
+
+Computationally expensive for large datasets. ​
+
+
+
+
+
+
+
+Hinge Loss:
+
+Definition:
+L=∑i=1Nmax(0,1−yi⋅y^i)
+Description: Used for training classifiers, particularly Support Vector Machines (SVMs). ​ It penalizes predictions that are incorrect or not confident enough. ​
+Advantages:
+
+Encourages correct classification with a margin. ​
+
+
+Disadvantages:
+
+Not suitable for probabilistic models.
+
+
+
+
+
+
+
+Huber Loss:
+
+Definition:
+%%%
+L =
+\begin{cases}
+\frac{1}{2}(y_i - \hat{y}_i)^2, & \text{if } |y_i - \hat{y}_i| \leq \delta \
+\delta \cdot |y_i - \hat{y}_i ​| - \frac{1}{2}\delta^2, & \text{if } |y_i - \hat{y}_i ​| > \delta
+\end{cases}
+%%%
+Description: Combines MSE and MAE. It behaves like MSE for small errors and MAE for large errors. It is used for regression tasks. ​
+Advantages:
+
+Robust to outliers.
+Combines the benefits of MSE and MAE.
+
+
+Disadvantages:
+
+Requires tuning of the hyperparameter δ. ​
+
+
+
+
+
+
+
+KL Divergence Loss:
+
+Definition:
+DKL(P||Q)=∑iP(i)log⁡P(i)Q(i)
+Description: Measures how one probability distribution Q differs from a reference distribution P. It is used in probabilistic models and generative models.
+Advantages:
+
+Useful for comparing probability distributions. ​
+
+
+Disadvantages:
+
+Sensitive to small probabilities. ​
+
+
+
+
+
+
+
+Log-Cosh Loss:
+
+Definition:
+L=∑i=1Nlog⁡(cosh⁡(y^i−yi))
+Description: Similar to MSE but less sensitive to outliers. It is used for regression tasks. ​
+Advantages:
+
+Smooth and differentiable.
+Robust to outliers.
+
+
+
+
+
+
+
+Categorical Cross-Entropy Loss:
+
+Definition:
+L=−∑i=1N∑j=1Kyijlog⁡(y^ij)
+Description: Used for multi-class classification problems. ​ It measures the difference between the predicted probability distribution and the actual one-hot encoded labels. ​
+
+
+
+
+Importance of Loss Functions:
+
+Guides Learning: Helps the model understand how far its predictions are from the actual values. ​
+Optimization: Used by optimization algorithms (e.g., gradient descent) to adjust model parameters. ​
+Performance Metric: Indicates how well the model is performing during training. ​
+
+The choice of the loss function depends on the type of problem (regression, classification, etc.) ​ and the desired behavior of the model.
