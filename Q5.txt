@@ -1,1 +1,123 @@
 Explain how a Neural Network can be trained with Back propagation and Forward propagation methods. Compare both methods
+Training a Neural Network: Forward Propagation vs. Backpropagation ​
+Training a neural network involves two key processes: forward propagation and backpropagation. These methods work together to optimize the network's weights and biases to minimize the error between predicted and actual outputs. ​
+
+1. Forward Propagation
+Definition: Forward propagation is the process of passing input data through the layers of a neural network to compute the output. ​
+Steps in Forward Propagation:
+
+
+Input Layer:
+
+Input data is fed into the network. ​
+Each input is multiplied by its corresponding weight and added to a bias term. ​
+
+
+
+Hidden Layers:
+
+The weighted sum of inputs is passed through an activation function to introduce non-linearity. ​
+The output of one layer becomes the input for the next layer. ​
+
+
+
+Output Layer:
+
+The final layer produces the output, which is compared to the actual target value using a loss function. ​
+
+
+
+Key Points:
+
+Forward propagation calculates the predicted output. ​
+It does not involve any weight updates.
+It is a feed-forward process, meaning data flows in one direction (from input to output). ​
+
+
+2. Backpropagation
+Definition: Backpropagation is the process of calculating the gradient of the loss function with respect to the weights and biases in the network, and then updating these parameters to minimize the loss.
+Steps in Backpropagation:
+
+
+Calculate Error:
+
+The error is computed using a loss function (e.g., Mean Squared Error, Cross-Entropy Loss) by comparing the predicted output to the actual target value. ​
+
+
+
+Compute Gradients:
+
+The gradient of the loss function with respect to each weight and bias is calculated using the chain rule of calculus.
+Gradients indicate the direction and magnitude of change needed to minimize the loss. ​
+
+
+
+Update Weights and Biases:
+
+The weights and biases are updated using an optimization algorithm (e.g., Gradient Descent). ​
+The update rule is:
+wnew=wold−α⋅∂L∂w
+Where α is the learning rate, L is the loss function, and w is the weight. ​
+
+
+
+Repeat:
+
+The process is repeated for multiple epochs until the loss is minimized and the model converges. ​
+
+
+
+Key Points:
+
+Backpropagation adjusts the weights and biases to minimize the error. ​
+It is a feedback process, meaning data flows backward from the output to the input.
+
+
+Comparison: Forward Propagation vs. Backpropagation ​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AspectForward PropagationBackpropagationDirectionData flows forward (input → output). ​Error flows backward (output → input). ​PurposeComputes the predicted output. ​Updates weights and biases to minimize error. ​Mathematical ProcessInvolves matrix multiplication and activation functions. ​Involves gradient calculation using the chain rule.Role in TrainingProvides the output for comparison with the target value. ​Optimizes the network parameters based on the error. ​DependencyIndependent of backpropagation. ​Requires the output from forward propagation. ​OutputPredicted values. ​Updated weights and biases. ​
+
+Summary
+
+Forward Propagation is the process of calculating the output of the network based on the input and current weights. ​
+Backpropagation is the process of adjusting the weights and biases to minimize the error between the predicted and actual outputs. ​
+Both methods are essential for training a neural network, as forward propagation computes the output, and backpropagation ensures the model learns from its mistakes. ​
