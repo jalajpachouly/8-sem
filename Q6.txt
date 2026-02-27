@@ -1,1 +1,168 @@
 Why Hyper parameters used in Neural Network.What are the methods for tuning hyperparameters.
+Why Are Hyperparameters Used in Neural Networks? ​
+Hyperparameters are critical components in neural networks because they control the learning process and the architecture of the model. ​ Unlike model parameters (e.g., weights and biases), hyperparameters are not learned during training but are set before the training begins. ​ Proper tuning of hyperparameters is essential for achieving optimal performance and avoiding issues like overfitting or underfitting. ​
+
+Purpose of Hyperparameters in Neural Networks ​
+
+
+Control Learning Process:
+
+Hyperparameters like learning rate, batch size, and number of epochs determine how the model learns from the data and how quickly it converges. ​
+
+
+
+Define Model Architecture:
+
+Hyperparameters such as the number of layers, number of neurons per layer, and activation functions define the structure of the neural network. ​
+
+
+
+Regularization:
+
+Hyperparameters like dropout rate and regularization coefficients (e.g., L1 or L2 regularization) help prevent overfitting by controlling the complexity of the model.
+
+
+
+Optimization:
+
+Hyperparameters like momentum and learning rate decay improve the efficiency and stability of optimization algorithms. ​
+
+
+
+Performance:
+
+Properly tuned hyperparameters ensure the model achieves high accuracy and generalizes well to unseen data. ​
+
+
+
+
+Methods for Tuning Hyperparameters ​
+Hyperparameter tuning is the process of finding the best combination of hyperparameter values for a neural network. ​ Below are the common methods used for hyperparameter tuning:
+1. Manual Search
+
+Description: The simplest method where the user manually selects and tests different hyperparameter values based on intuition and experience.
+Advantages:
+
+Easy to implement. ​
+Requires no additional tools.
+
+
+Disadvantages:
+
+Time-consuming and inefficient for large models. ​
+May not find the optimal combination of hyperparameters. ​
+
+
+
+
+2. Grid Search
+
+Description: A systematic approach where all possible combinations of hyperparameters within a predefined range are tested.
+Advantages:
+
+Exhaustive search ensures that the best combination is found. ​
+
+
+Disadvantages:
+
+Computationally expensive, especially for large models with many hyperparameters. ​
+Not feasible for high-dimensional hyperparameter spaces. ​
+
+
+
+
+3. Random Search
+
+Description: Randomly samples hyperparameter values within a predefined range and evaluates the model's performance.
+Advantages:
+
+More efficient than grid search for high-dimensional spaces. ​
+Can find good hyperparameter combinations faster. ​
+
+
+Disadvantages:
+
+May miss the optimal combination due to randomness. ​
+
+
+
+
+4. Bayesian Optimization
+
+Description: Uses probabilistic models to predict the performance of hyperparameter combinations and selects the next set of hyperparameters based on these predictions.
+Advantages:
+
+Efficient for high-dimensional spaces.
+Focuses on promising regions of the hyperparameter space.
+
+
+Disadvantages:
+
+Requires more complex implementation. ​
+Computationally expensive. ​
+
+
+
+
+5. Gradient-Based Optimization
+
+Description: Uses gradient descent to optimize hyperparameters by treating them as continuous variables. ​
+Advantages:
+
+Can be faster than other methods for certain problems. ​
+
+
+Disadvantages:
+
+Requires differentiable hyperparameters. ​
+May get stuck in local minima. ​
+
+
+
+
+6. Evolutionary Algorithms
+
+Description: Uses genetic algorithms or other evolutionary techniques to optimize hyperparameters by mimicking natural selection. ​
+Advantages:
+
+Can handle complex and non-differentiable hyperparameter spaces.
+
+
+Disadvantages:
+
+Computationally expensive. ​
+Requires careful tuning of the evolutionary algorithm itself. ​
+
+
+
+
+7. Hyperband
+
+Description: A resource-efficient method that combines random search and early stopping. ​ It allocates resources to different hyperparameter configurations and stops unpromising ones early.
+Advantages:
+
+Efficient for large-scale hyperparameter tuning.
+Reduces computation time by stopping poor configurations early.
+
+
+Disadvantages:
+
+Requires careful configuration of resource allocation. ​
+
+
+
+
+Key Hyperparameters in Neural Networks ​
+
+Learning Rate: Controls the step size for weight updates during training. ​
+Batch Size: Determines the number of samples used in one forward and backward pass.
+Number of Epochs: Specifies how many times the entire dataset is passed through the network during training. ​
+Number of Layers: Defines the depth of the network. ​
+Number of Neurons per Layer: Determines the capacity of each layer. ​
+Activation Functions: Introduces non-linearity to the model.
+Dropout Rate: Prevents overfitting by randomly dropping neurons during training. ​
+Regularization Coefficients: Controls the penalty for large weights (e.g., L1 or L2 regularization). ​
+
+
+Conclusion
+Hyperparameters play a crucial role in determining the performance and behavior of a neural network. ​ Proper tuning of hyperparameters is essential for building an effective model. ​ While manual tuning is simple, advanced methods like Bayesian optimization and Hyperband are more efficient for complex models and large datasets.
