@@ -1,1 +1,101 @@
 "What is an Activation Function? Enlist and Explain different Activation functions used in Neural Network."
+An activation function is a mathematical function applied to the output of a neuron in a neural network. ​ It determines whether a neuron should be activated or not, introducing non-linearity into the model. This non-linearity allows the network to learn complex patterns and relationships in the data. Activation functions are crucial for deep learning models as they help the network understand and solve non-linear problems. ​
+Types of Activation Functions in Neural Networks:
+
+
+Linear Activation Function:
+
+Definition: f(x)=x ​
+Description: The output is directly proportional to the input. ​ It is rarely used in practice because it does not introduce non-linearity, which is essential for solving complex problems. ​
+
+
+
+Binary Step Function:
+
+Definition:
+%%%
+f(x) =
+\begin{cases}
+0, & \text{if } x < 0 \ ​
+1, & \text{if } x \geq 0 ​
+\end{cases}
+%%%
+Description: Outputs either 0 or 1 based on whether the input is below or above a threshold. ​ It is used in single-layer networks for binary classification. ​
+
+
+
+Bipolar Step Function:
+
+Definition:
+%%%
+f(x) =
+\begin{cases}
+-1, & \text{if } x < 0 \
+1, & \text{if } x \geq 0 ​
+\end{cases}
+%%%
+Description: Similar to the binary step function but outputs -1 or 1. ​ It is used in single-layer networks for bipolar classification.
+
+
+
+Sigmoidal Function:
+
+Binary Sigmoidal Function:
+
+Definition: f(x)=11+e−Ax, where A is the steepness parameter. ​
+Description: Produces output between 0 and 1. It is commonly used in back-propagation networks. ​
+
+
+Bipolar Sigmoidal Function:
+
+Definition: f(x)=21+e−Ax−1, where A is the steepness parameter. ​
+Description: Produces output between -1 and 1. ​ It is also used in back-propagation networks. ​
+
+
+
+
+
+Tanh Activation Function:
+
+Definition: f(x)=ex−e−xex+e−x ​
+Description: Produces output between -1 and 1. ​ It is preferred over the sigmoid function for multi-layer networks as it often provides better performance. ​
+
+
+
+Hard Tanh Activation Function:
+
+Definition:
+%%%
+f(x) =
+\begin{cases}
+-1, & \text{if } x < -1 \
+x, & \text{if } -1 \leq x \leq 1 \
+1, & \text{if } x > 1 ​
+\end{cases}
+%%%
+Description: A variant of the tanh function that is computationally simpler.
+
+
+
+ReLU (Rectified Linear Unit):
+
+Definition: f(x)=max(0,x) ​
+Description: Outputs 0 for negative inputs and the input value for positive inputs. ​ It is widely used in deep learning as it helps overcome the vanishing gradient problem and allows faster learning. ​
+
+
+
+Softmax Activation Function:
+
+Definition:
+f(xi)=exi∑j=1Kexj
+Description: Converts a vector of real numbers into a probability distribution over multiple classes. ​ It is commonly used in the output layer for classification tasks. ​
+
+
+
+Importance of Activation Functions:
+
+Introduce non-linearity, enabling the network to learn complex patterns. ​
+Help in determining the output of a neuron. ​
+Play a crucial role in the convergence of the model during training. ​
+
+Each activation function has its own advantages and is chosen based on the specific requirements of the neural network and the problem being solved.
