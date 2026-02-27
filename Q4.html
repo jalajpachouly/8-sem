@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Q4 – Loss Functions | DL Unit 2</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#2d3436; --primary:#0984e3; --shadow:0 2px 12px rgba(0,0,0,.08); }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:#2d3436; padding:24px; line-height:1.8; font-size:15px; }
+    .back-link { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--primary); font-size:.9rem; font-weight:600; margin-bottom:18px; }
+    .back-link:hover { text-decoration:underline; }
+    .question-banner { background:linear-gradient(135deg,#6c5ce7,#0984e3); color:#fff; border-radius:14px; padding:28px 32px; margin-bottom:28px; box-shadow:0 4px 20px rgba(108,92,231,.25); }
+    .question-banner .q-label { font-size:.8rem; text-transform:uppercase; letter-spacing:1.5px; opacity:.85; margin-bottom:6px; }
+    .question-banner .q-text { font-size:1.2rem; font-weight:700; line-height:1.5; }
+    .question-banner .q-marks { display:inline-block; background:rgba(255,255,255,.2); padding:4px 14px; border-radius:20px; font-size:.82rem; margin-top:10px; font-weight:600; }
+    h1 { text-align:center; font-size:1.5rem; margin-bottom:4px; color:var(--accent); }
+    .subtitle { text-align:center; color:#636e72; margin-bottom:30px; font-size:.9rem; }
+    .card { background:var(--card); border-radius:14px; box-shadow:var(--shadow); padding:28px 32px; margin-bottom:26px; }
+    .card h2 { font-size:1.18rem; color:var(--primary); margin-bottom:14px; border-bottom:2px solid #dfe6e9; padding-bottom:8px; }
+    .card p { font-size:.94rem; margin-bottom:10px; text-align:justify; }
+    .highlight { background:#ffeaa7; padding:2px 6px; border-radius:4px; font-weight:600; }
+    .keyword { color:#d63031; font-weight:600; }
+    .figure-box { background:#f8f9fa; border:2px solid #dfe6e9; border-radius:12px; padding:20px; margin:18px 0; text-align:center; overflow-x:auto; }
+    .figure-box .fig-title { font-weight:700; color:#2d3436; margin-bottom:12px; font-size:.95rem; }
+    .figure-box svg { max-width:100%; height:auto; }
+    .figure-box .fig-caption { font-size:.82rem; color:#636e72; margin-top:12px; font-style:italic; }
+
+    /* Math styling */
+    .math { font-family:'Cambria Math','Latin Modern Math','STIX Two Math',Georgia,serif; font-style:italic; font-size:1.08em; letter-spacing:.3px; }
+    .formula-box { background:#fdf2e9; border-left:4px solid #e17055; border-radius:6px; padding:16px 22px; margin:12px 0; font-size:.95rem; color:#2d3436; }
+    .math-block { display:block; font-family:'Cambria Math','Latin Modern Math','STIX Two Math',Georgia,serif; font-style:italic; font-size:1.18em; text-align:center; padding:10px 0; letter-spacing:.3px; line-height:2; }
+    .frac { display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:0 3px; }
+    .frac .num,.frac .den { font-size:.85em; line-height:1.2; text-align:center; padding:0 4px; }
+    .frac .num { border-bottom:1.5px solid #2d3436; padding-bottom:2px; }
+    .frac .den { padding-top:2px; }
+    .piecewise-tbl { border-collapse:collapse; margin:6px auto; }
+    .piecewise-tbl td { padding:3px 10px; font-family:'Cambria Math','Latin Modern Math',Georgia,serif; font-style:italic; font-size:1.05em; }
+    .piecewise-tbl .cond { font-style:normal; color:#636e72; font-size:.88em; }
+    .piecewise-tbl .brace { font-size:2.2em; font-style:normal; vertical-align:middle; color:#6c5ce7; font-weight:300; }
+
+    /* Loss function blocks */
+    .lf-block { border-left:4px solid var(--primary); padding:18px 20px; background:#f0f4ff; border-radius:0 10px 10px 0; margin-bottom:18px; }
+    .lf-block:last-child { margin-bottom:0; }
+    .lf-block h3 { font-size:1rem; font-weight:700; margin-bottom:10px; color:var(--accent); }
+    .lf-block p { font-size:.9rem; color:#444; margin-bottom:6px; }
+    .lf-block .pros { color:#27ae60; font-size:.85rem; margin-bottom:3px; }
+    .lf-block .cons { color:#d63031; font-size:.85rem; margin-bottom:3px; }
+
+    .key-points { background:#e8f8f5; border-left:4px solid #00b894; border-radius:6px; padding:16px 20px; margin:14px 0; }
+    .imp-list { list-style:none; padding:0; display:flex; flex-direction:column; gap:10px; }
+    .imp-list li { display:flex; align-items:flex-start; gap:10px; font-size:.93rem; }
+    .imp-list li::before { content:'✔'; color:#27ae60; font-weight:700; margin-top:2px; flex-shrink:0; }
+
+    footer { text-align:center; margin-top:40px; font-size:.78rem; color:#b2bec3; }
+    @media(max-width:680px){ body{padding:12px;} .card{padding:18px 16px;} }
+  </style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">&#8592; Back to Unit 2 Index</a>
+
+<div class="question-banner">
+  <div class="q-label">Question 4 &bull; Unit 2 – Loss Functions</div>
+  <div class="q-text">What is the Loss function? Enlist and Explain different Loss functions used in Neural Network.</div>
+  <span class="q-marks">&#128221; 5 Marks</span>
+</div>
+
+<h1>Loss Functions in Neural Networks</h1>
+<p class="subtitle">Definition, types with formulas and visual curves</p>
+
+<!-- ===== DEFINITION ===== -->
+<div class="card">
+  <h2>What is a Loss Function?</h2>
+  <p>A <span class="keyword">loss function</span> (also called cost function or objective function) is a mathematical function that <span class="highlight">measures the difference</span> between the predicted output of a neural network and the actual target value. It quantifies the error or deviation of the model's predictions from the true values.</p>
+  <p>The goal of training a neural network is to <strong>minimize this loss</strong>, thereby improving the accuracy of the model. Loss functions guide the optimization process during training — they help the model learn by providing feedback on how well it is performing and how it can adjust its parameters (weights and biases) to reduce the error.</p>
+
+  <!-- SVG: Role of loss function in training loop -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 1 — Loss Function in the Neural Network Training Loop</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 180" width="720" height="180">
+      <defs>
+        <marker id="arr4" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0,8 3,0 6" fill="#636e72"/>
+        </marker>
+        <linearGradient id="g4a" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#74b9ff"/><stop offset="100%" style="stop-color:#0984e3"/></linearGradient>
+        <linearGradient id="g4b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ff7675"/><stop offset="100%" style="stop-color:#d63031"/></linearGradient>
+        <linearGradient id="g4c" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#55efc4"/><stop offset="100%" style="stop-color:#00b894"/></linearGradient>
+        <linearGradient id="g4d" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#a29bfe"/><stop offset="100%" style="stop-color:#6c5ce7"/></linearGradient>
+      </defs>
+      <!-- Input -->
+      <rect x="10" y="50" width="110" height="60" rx="10" fill="url(#g4a)"/>
+      <text x="65" y="77" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Input Data</text>
+      <text x="65" y="93" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">x</text>
+      <!-- Arrow -->
+      <line x1="120" y1="80" x2="175" y2="80" stroke="#636e72" stroke-width="2" marker-end="url(#arr4)"/>
+      <!-- Network -->
+      <rect x="180" y="40" width="130" height="80" rx="10" fill="url(#g4d)"/>
+      <text x="245" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Neural Network</text>
+      <text x="245" y="90" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">ŷ = f(x; w, b)</text>
+      <!-- Arrow -->
+      <line x1="310" y1="80" x2="365" y2="80" stroke="#636e72" stroke-width="2" marker-end="url(#arr4)"/>
+      <!-- Loss Function -->
+      <rect x="370" y="40" width="140" height="80" rx="10" fill="url(#g4b)"/>
+      <text x="440" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Loss Function</text>
+      <text x="440" y="86" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">L(y, ŷ)</text>
+      <text x="440" y="104" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Compute error</text>
+      <!-- Arrow -->
+      <line x1="510" y1="80" x2="565" y2="80" stroke="#636e72" stroke-width="2" marker-end="url(#arr4)"/>
+      <!-- Optimizer -->
+      <rect x="570" y="40" width="130" height="80" rx="10" fill="url(#g4c)"/>
+      <text x="635" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Optimizer</text>
+      <text x="635" y="86" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Gradient Descent</text>
+      <text x="635" y="104" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Update w, b</text>
+      <!-- Feedback loop arrow -->
+      <path d="M 635,120 L 635,155 L 245,155 L 245,120" stroke="#636e72" stroke-width="2" fill="none" marker-end="url(#arr4)" stroke-dasharray="6,3"/>
+      <text x="440" y="170" text-anchor="middle" font-size="10" fill="#636e72">Backpropagation — update weights to reduce loss</text>
+      <!-- Target input to loss -->
+      <text x="440" y="30" text-anchor="middle" font-size="10" fill="#636e72">Target y (actual)</text>
+      <line x1="440" y1="33" x2="440" y2="40" stroke="#636e72" stroke-width="1.5" marker-end="url(#arr4)"/>
+    </svg>
+    <div class="fig-caption">The loss function sits at the heart of the training loop — it measures prediction error and drives the optimizer to improve the model.</div>
+  </div>
+</div>
+
+<!-- ===== TYPES ===== -->
+<div class="card">
+  <h2>Types of Loss Functions</h2>
+
+  <!-- SVG: Loss landscape overview -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 2 — Regression vs. Classification Loss Functions</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 160" width="700" height="160">
+      <rect x="10" y="10" width="330" height="140" rx="10" fill="#e8f4ff" stroke="#0984e3" stroke-width="2"/>
+      <text x="175" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#0984e3">Regression Losses</text>
+      <text x="175" y="56" text-anchor="middle" font-size="11" fill="#636e72">(continuous output)</text>
+      <text x="50" y="80" font-size="12" fill="#2d3436">• MSE</text>
+      <text x="50" y="100" font-size="12" fill="#2d3436">• MAE</text>
+      <text x="50" y="120" font-size="12" fill="#2d3436">• Huber Loss</text>
+      <text x="200" y="80" font-size="12" fill="#2d3436">• Log-Cosh</text>
+
+      <rect x="360" y="10" width="330" height="140" rx="10" fill="#fff0f0" stroke="#d63031" stroke-width="2"/>
+      <text x="525" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#d63031">Classification Losses</text>
+      <text x="525" y="56" text-anchor="middle" font-size="11" fill="#636e72">(discrete output / probability)</text>
+      <text x="385" y="80" font-size="12" fill="#2d3436">• Cross-Entropy</text>
+      <text x="385" y="100" font-size="12" fill="#2d3436">• Hinge Loss</text>
+      <text x="385" y="120" font-size="12" fill="#2d3436">• KL Divergence</text>
+      <text x="560" y="80" font-size="12" fill="#2d3436">• Categorical CE</text>
+    </svg>
+    <div class="fig-caption">Loss functions are broadly divided into regression losses (for continuous targets) and classification losses (for discrete labels/probabilities).</div>
+  </div>
+
+  <!-- 1. MSE -->
+  <div class="lf-block">
+    <h3>1. Mean Squared Error (MSE)</h3>
+    <div class="formula-box">
+      <span class="math-block">MSE = <span class="frac"><span class="num">1</span><span class="den"><span class="math">N</span></span></span> <span style="font-size:1.1em;">Σ</span><sub><span class="math">i</span>=1</sub><sup><span class="math">N</span></sup> (<span class="math">y<sub>i</sub></span> − <span class="math">ŷ<sub>i</sub></span>)<sup>2</sup></span>
+    </div>
+    <p>Measures the <strong>average squared difference</strong> between actual and predicted values. Commonly used for <strong>regression tasks</strong>.</p>
+    <p class="pros">✔ Easy to interpret &nbsp; ✔ Penalizes larger errors more heavily</p>
+    <p class="cons">✗ Not robust to outliers &nbsp; ✗ Error unit is squared (not intuitive)</p>
+  </div>
+
+  <!-- 2. MAE -->
+  <div class="lf-block">
+    <h3>2. Mean Absolute Error (MAE)</h3>
+    <div class="formula-box">
+      <span class="math-block">MAE = <span class="frac"><span class="num">1</span><span class="den"><span class="math">N</span></span></span> <span style="font-size:1.1em;">Σ</span><sub><span class="math">i</span>=1</sub><sup><span class="math">N</span></sup> |<span class="math">y<sub>i</sub></span> − <span class="math">ŷ<sub>i</sub></span>|</span>
+    </div>
+    <p>Measures the <strong>average absolute difference</strong> between actual and predicted values. Also used for regression tasks.</p>
+    <p class="pros">✔ Robust to outliers &nbsp; ✔ More intuitive error measure</p>
+    <p class="cons">✗ Does not penalize large errors as strongly as MSE</p>
+  </div>
+
+  <!-- 3. Cross-Entropy -->
+  <div class="lf-block">
+    <h3>3. Binary Cross-Entropy Loss</h3>
+    <div class="formula-box">
+      <span class="math-block"><span class="math">L</span> = − <span class="frac"><span class="num">1</span><span class="den"><span class="math">N</span></span></span> <span style="font-size:1.1em;">Σ</span><sub><span class="math">i</span>=1</sub><sup><span class="math">N</span></sup> [<span class="math">y<sub>i</sub></span> log(<span class="math">ŷ<sub>i</sub></span>) + (1 − <span class="math">y<sub>i</sub></span>) log(1 − <span class="math">ŷ<sub>i</sub></span>)]</span>
+    </div>
+    <p>Used for <strong>binary classification</strong> tasks. Measures the difference between the predicted probability distribution and actual labels.</p>
+    <p class="pros">✔ Works well for probabilistic models &nbsp; ✔ Encourages predicted probability close to actual label</p>
+    <p class="cons">✗ Computationally expensive for large datasets</p>
+  </div>
+
+  <!-- 4. Hinge -->
+  <div class="lf-block">
+    <h3>4. Hinge Loss</h3>
+    <div class="formula-box">
+      <span class="math-block"><span class="math">L</span> = <span style="font-size:1.1em;">Σ</span><sub><span class="math">i</span>=1</sub><sup><span class="math">N</span></sup> max(0, 1 − <span class="math">y<sub>i</sub></span> · <span class="math">ŷ<sub>i</sub></span>)</span>
+    </div>
+    <p>Used for training classifiers, particularly <strong>Support Vector Machines (SVMs)</strong>. Penalizes predictions that are incorrect or not confident enough.</p>
+    <p class="pros">✔ Encourages correct classification with a margin</p>
+    <p class="cons">✗ Not suitable for probabilistic models</p>
+  </div>
+
+  <!-- 5. Huber -->
+  <div class="lf-block">
+    <h3>5. Huber Loss</h3>
+    <div class="formula-box">
+      <table class="piecewise-tbl"><tr>
+        <td rowspan="2"><span class="math">L</span> =</td>
+        <td rowspan="2" class="brace">{</td>
+        <td><span class="frac"><span class="num">1</span><span class="den">2</span></span>(<span class="math">y<sub>i</sub></span> − <span class="math">ŷ<sub>i</sub></span>)<sup>2</sup></td>
+        <td class="cond">if |<span class="math">y<sub>i</sub></span> − <span class="math">ŷ<sub>i</sub></span>| ≤ <span class="math">δ</span></td>
+      </tr><tr>
+        <td><span class="math">δ</span> · |<span class="math">y<sub>i</sub></span> − <span class="math">ŷ<sub>i</sub></span>| − <span class="frac"><span class="num">1</span><span class="den">2</span></span><span class="math">δ</span><sup>2</sup></td>
+        <td class="cond">if |<span class="math">y<sub>i</sub></span> − <span class="math">ŷ<sub>i</sub></span>| &gt; <span class="math">δ</span></td>
+      </tr></table>
+    </div>
+    <p>Combines MSE and MAE. Behaves like <strong>MSE for small errors</strong> and <strong>MAE for large errors</strong>. Used for regression tasks.</p>
+    <p class="pros">✔ Robust to outliers &nbsp; ✔ Combines benefits of MSE and MAE</p>
+    <p class="cons">✗ Requires tuning of hyperparameter <span class="math">δ</span></p>
+  </div>
+
+  <!-- 6. KL Divergence -->
+  <div class="lf-block">
+    <h3>6. KL Divergence Loss</h3>
+    <div class="formula-box">
+      <span class="math-block"><span class="math">D</span><sub>KL</sub>(<span class="math">P</span> ‖ <span class="math">Q</span>) = <span style="font-size:1.1em;">Σ</span><sub><span class="math">i</span></sub> <span class="math">P</span>(<span class="math">i</span>) log <span class="frac"><span class="num"><span class="math">P</span>(<span class="math">i</span>)</span><span class="den"><span class="math">Q</span>(<span class="math">i</span>)</span></span></span>
+    </div>
+    <p>Measures how one probability distribution <span class="math">Q</span> differs from a reference distribution <span class="math">P</span>. Used in <strong>probabilistic models and generative models</strong>.</p>
+    <p class="pros">✔ Useful for comparing probability distributions</p>
+    <p class="cons">✗ Sensitive to small probabilities</p>
+  </div>
+
+  <!-- 7. Log-Cosh -->
+  <div class="lf-block">
+    <h3>7. Log-Cosh Loss</h3>
+    <div class="formula-box">
+      <span class="math-block"><span class="math">L</span> = <span style="font-size:1.1em;">Σ</span><sub><span class="math">i</span>=1</sub><sup><span class="math">N</span></sup> log(cosh(<span class="math">ŷ<sub>i</sub></span> − <span class="math">y<sub>i</sub></span>))</span>
+    </div>
+    <p>Similar to MSE but <strong>less sensitive to outliers</strong>. Used for regression tasks. Smooth and differentiable everywhere.</p>
+    <p class="pros">✔ Smooth and differentiable &nbsp; ✔ Robust to outliers</p>
+  </div>
+
+  <!-- 8. Categorical CE -->
+  <div class="lf-block">
+    <h3>8. Categorical Cross-Entropy Loss</h3>
+    <div class="formula-box">
+      <span class="math-block"><span class="math">L</span> = − <span style="font-size:1.1em;">Σ</span><sub><span class="math">i</span>=1</sub><sup><span class="math">N</span></sup> <span style="font-size:1.1em;">Σ</span><sub><span class="math">j</span>=1</sub><sup><span class="math">K</span></sup> <span class="math">y<sub>ij</sub></span> log(<span class="math">ŷ<sub>ij</sub></span>)</span>
+    </div>
+    <p>Used for <strong>multi-class classification</strong> problems. Measures the difference between the predicted probability distribution and the actual one-hot encoded labels.</p>
+  </div>
+</div>
+
+<!-- ===== MSE vs MAE visual ===== -->
+<div class="card">
+  <h2>Visual Comparison — MSE vs MAE vs Huber</h2>
+  <div class="figure-box">
+    <div class="fig-title">Figure 3 — Loss Curves for MSE, MAE, and Huber</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" width="600" height="280">
+      <defs>
+        <marker id="arrL" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+          <polygon points="0 0,7 2.5,0 5" fill="#636e72"/>
+        </marker>
+      </defs>
+      <!-- Axes -->
+      <line x1="60" y1="240" x2="560" y2="240" stroke="#aaa" stroke-width="1.5" marker-end="url(#arrL)"/>
+      <line x1="300" y1="250" x2="300" y2="20" stroke="#aaa" stroke-width="1.5" marker-end="url(#arrL)"/>
+      <text x="565" y="244" font-size="11" fill="#636e72">error (y − ŷ)</text>
+      <text x="285" y="16" font-size="11" fill="#636e72">Loss</text>
+
+      <!-- MSE: parabola -->
+      <path d="M 100,40 Q 200,230 300,240 Q 400,230 500,40" stroke="#0984e3" stroke-width="2.5" fill="none"/>
+      <text x="510" y="50" font-size="11" fill="#0984e3" font-weight="700">MSE (x²)</text>
+
+      <!-- MAE: V-shape -->
+      <polyline points="100,60 300,240 500,60" stroke="#d63031" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+      <text x="510" y="72" font-size="11" fill="#d63031" font-weight="700">MAE (|x|)</text>
+
+      <!-- Huber: smooth V -->
+      <path d="M 100,65 L 220,180 Q 260,235 300,240 Q 340,235 380,180 L 500,65" stroke="#00b894" stroke-width="2.5" fill="none" stroke-dasharray="8,4"/>
+      <text x="510" y="94" font-size="11" fill="#00b894" font-weight="700">Huber</text>
+
+      <!-- Grid -->
+      <line x1="60" y1="140" x2="560" y2="140" stroke="#eee" stroke-width="1"/>
+      <line x1="180" y1="20" x2="180" y2="240" stroke="#eee" stroke-width="1"/>
+      <line x1="420" y1="20" x2="420" y2="240" stroke="#eee" stroke-width="1"/>
+
+      <!-- Legend -->
+      <text x="300" y="270" text-anchor="middle" font-size="10" fill="#636e72">MSE penalizes large errors quadratically · MAE is linear · Huber combines both</text>
+    </svg>
+    <div class="fig-caption">MSE grows quadratically with error (sensitive to outliers), MAE grows linearly (robust), and Huber transitions smoothly between the two.</div>
+  </div>
+</div>
+
+<!-- ===== IMPORTANCE ===== -->
+<div class="card">
+  <h2>Importance of Loss Functions</h2>
+  <ul class="imp-list">
+    <li><strong>Guides Learning</strong> — helps the model understand how far its predictions are from the actual values.</li>
+    <li><strong>Optimization</strong> — used by optimization algorithms (e.g., gradient descent) to adjust model parameters.</li>
+    <li><strong>Performance Metric</strong> — indicates how well the model is performing during training.</li>
+    <li><strong>Problem-Specific</strong> — the choice of loss function depends on the type of problem (regression, classification, etc.) and the desired behaviour of the model.</li>
+  </ul>
+</div>
+
+<footer>DL Unit 2 &mdash; Q4 &mdash; Loss Functions &mdash; In-Sem Exam Preparation</footer>
+</body>
+</html>

@@ -18,6 +18,8 @@ HTML_FILES = [
     ("Q1.html", "Q1 - Perceptron & Training Steps"),
     ("Q2.html", "Q2 - Biological Neuron & Feed-Forward Network"),
     ("Q3.html", "Q3 - Activation Functions"),
+    ("Q4.html", "Q4 - Loss Functions"),
+    ("Q5.html", "Q5 - Forward & Backpropagation"),
     ("Q6.html", "Q6 - Hyperparameters"),
     ("Q7.html", "Q7 - Sentiment Analysis"),
     ("Q8.html", "Q8 - PyTorch & Google Colab"),

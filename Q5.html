@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Q5 – Forward &amp; Backpropagation | DL Unit 2</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#2d3436; --primary:#0984e3; --shadow:0 2px 12px rgba(0,0,0,.08); }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:#2d3436; padding:24px; line-height:1.8; font-size:15px; }
+    .back-link { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--primary); font-size:.9rem; font-weight:600; margin-bottom:18px; }
+    .back-link:hover { text-decoration:underline; }
+    .question-banner { background:linear-gradient(135deg,#6c5ce7,#0984e3); color:#fff; border-radius:14px; padding:28px 32px; margin-bottom:28px; box-shadow:0 4px 20px rgba(108,92,231,.25); }
+    .question-banner .q-label { font-size:.8rem; text-transform:uppercase; letter-spacing:1.5px; opacity:.85; margin-bottom:6px; }
+    .question-banner .q-text { font-size:1.2rem; font-weight:700; line-height:1.5; }
+    .question-banner .q-marks { display:inline-block; background:rgba(255,255,255,.2); padding:4px 14px; border-radius:20px; font-size:.82rem; margin-top:10px; font-weight:600; }
+    h1 { text-align:center; font-size:1.5rem; margin-bottom:4px; color:var(--accent); }
+    .subtitle { text-align:center; color:#636e72; margin-bottom:30px; font-size:.9rem; }
+    .card { background:var(--card); border-radius:14px; box-shadow:var(--shadow); padding:28px 32px; margin-bottom:26px; }
+    .card h2 { font-size:1.18rem; color:var(--primary); margin-bottom:14px; border-bottom:2px solid #dfe6e9; padding-bottom:8px; }
+    .card h3 { font-size:1rem; color:#e17055; margin:16px 0 8px; }
+    .card p { font-size:.94rem; margin-bottom:10px; text-align:justify; }
+    .highlight { background:#ffeaa7; padding:2px 6px; border-radius:4px; font-weight:600; }
+    .keyword { color:#d63031; font-weight:600; }
+    .figure-box { background:#f8f9fa; border:2px solid #dfe6e9; border-radius:12px; padding:20px; margin:18px 0; text-align:center; overflow-x:auto; }
+    .figure-box .fig-title { font-weight:700; color:#2d3436; margin-bottom:12px; font-size:.95rem; }
+    .figure-box svg { max-width:100%; height:auto; }
+    .figure-box .fig-caption { font-size:.82rem; color:#636e72; margin-top:12px; font-style:italic; }
+
+    /* Math styling */
+    .math { font-family:'Cambria Math','Latin Modern Math','STIX Two Math',Georgia,serif; font-style:italic; font-size:1.08em; letter-spacing:.3px; }
+    .formula-box { background:#fdf2e9; border-left:4px solid #e17055; border-radius:6px; padding:16px 22px; margin:12px 0; font-size:.95rem; color:#2d3436; }
+    .math-block { display:block; font-family:'Cambria Math','Latin Modern Math','STIX Two Math',Georgia,serif; font-style:italic; font-size:1.18em; text-align:center; padding:10px 0; letter-spacing:.3px; line-height:2; }
+    .frac { display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:0 3px; }
+    .frac .num,.frac .den { font-size:.85em; line-height:1.2; text-align:center; padding:0 4px; }
+    .frac .num { border-bottom:1.5px solid #2d3436; padding-bottom:2px; }
+    .frac .den { padding-top:2px; }
+
+    /* Step cards */
+    .step-grid { display:grid; grid-template-columns:1fr; gap:12px; margin-top:12px; }
+    .step-card { background:#f0f4ff; border-left:4px solid var(--primary); border-radius:0 10px 10px 0; padding:14px 18px; }
+    .step-card .step-num { display:inline-block; background:var(--primary); color:#fff; width:26px; height:26px; border-radius:50%; text-align:center; line-height:26px; font-weight:700; font-size:.82rem; margin-right:8px; }
+    .step-card h4 { display:inline; font-size:.95rem; color:#2d3436; }
+    .step-card p { font-size:.88rem; margin:6px 0 0; }
+    .step-card.bp { border-left-color:#e17055; background:#fff5f0; }
+    .step-card.bp .step-num { background:#e17055; }
+
+    /* Key points */
+    .key-points { background:#e8f8f5; border-left:4px solid #00b894; border-radius:6px; padding:16px 20px; margin:14px 0; }
+    .key-points.warn { background:#fff5f0; border-left-color:#e17055; }
+    .kp-list { list-style:none; padding:0; }
+    .kp-list li { font-size:.9rem; padding:4px 0; display:flex; align-items:flex-start; gap:8px; }
+    .kp-list li::before { content:'✔'; color:#27ae60; font-weight:700; flex-shrink:0; }
+    .kp-list.warn li::before { content:'➤'; color:#e17055; }
+
+    /* Comparison table */
+    table.cmp-table { width:100%; border-collapse:collapse; margin:14px 0; }
+    table.cmp-table th { background:#2d3436; color:#fff; padding:12px 16px; text-align:left; font-size:.88rem; }
+    table.cmp-table td { padding:12px 16px; border-bottom:1px solid #eee; font-size:.9rem; vertical-align:top; }
+    table.cmp-table tr:hover { background:#f0f0f0; }
+    table.cmp-table td:nth-child(2) { background:#f0f4ff; }
+    table.cmp-table td:nth-child(3) { background:#fff5f0; }
+
+    .imp-list { list-style:none; padding:0; display:flex; flex-direction:column; gap:10px; }
+    .imp-list li { display:flex; align-items:flex-start; gap:10px; font-size:.93rem; }
+    .imp-list li::before { content:'✔'; color:#27ae60; font-weight:700; margin-top:2px; flex-shrink:0; }
+
+    footer { text-align:center; margin-top:40px; font-size:.78rem; color:#b2bec3; }
+    @media(max-width:680px){ body{padding:12px;} .card{padding:18px 16px;} }
+  </style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">&#8592; Back to Unit 2 Index</a>
+
+<div class="question-banner">
+  <div class="q-label">Question 5 &bull; Unit 2 – Training Methods</div>
+  <div class="q-text">Explain how a Neural Network can be trained with Back propagation and Forward propagation methods. Compare both methods.</div>
+  <span class="q-marks">&#128221; 5 Marks</span>
+</div>
+
+<h1>Forward Propagation &amp; Backpropagation</h1>
+<p class="subtitle">Training a neural network — step-by-step with diagrams and comparison</p>
+
+<!-- ===== OVERVIEW ===== -->
+<div class="card">
+  <h2>Overview</h2>
+  <p>Training a neural network involves two key processes: <span class="keyword">forward propagation</span> and <span class="keyword">backpropagation</span>. These methods work together to optimize the network's weights and biases to <span class="highlight">minimize the error</span> between predicted and actual outputs.</p>
+
+  <!-- SVG: Full training cycle -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 1 — The Complete Training Cycle</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 200" width="740" height="200">
+      <defs>
+        <marker id="arr5" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0,8 3,0 6" fill="#636e72"/>
+        </marker>
+        <marker id="arr5b" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0,8 3,0 6" fill="#e17055"/>
+        </marker>
+        <linearGradient id="gFP" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#74b9ff"/><stop offset="100%" style="stop-color:#0984e3"/></linearGradient>
+        <linearGradient id="gBP" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ff7675"/><stop offset="100%" style="stop-color:#d63031"/></linearGradient>
+        <linearGradient id="gN" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#a29bfe"/><stop offset="100%" style="stop-color:#6c5ce7"/></linearGradient>
+        <linearGradient id="gL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fdcb6e"/><stop offset="100%" style="stop-color:#f39c12"/></linearGradient>
+      </defs>
+
+      <!-- Forward propagation arrow (top) -->
+      <text x="370" y="18" text-anchor="middle" font-size="13" font-weight="700" fill="#0984e3">→ Forward Propagation →</text>
+
+      <!-- Input -->
+      <rect x="15" y="45" width="100" height="70" rx="10" fill="url(#gFP)"/>
+      <text x="65" y="77" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Input</text>
+      <text x="65" y="95" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">x₁, x₂, …</text>
+
+      <!-- Arrow -->
+      <line x1="115" y1="80" x2="160" y2="80" stroke="#0984e3" stroke-width="2.5" marker-end="url(#arr5)"/>
+
+      <!-- Hidden Layer 1 -->
+      <rect x="165" y="40" width="110" height="80" rx="10" fill="url(#gN)"/>
+      <text x="220" y="72" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Hidden Layer 1</text>
+      <text x="220" y="90" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Σ(wx+b) → f(x)</text>
+
+      <!-- Arrow -->
+      <line x1="275" y1="80" x2="320" y2="80" stroke="#0984e3" stroke-width="2.5" marker-end="url(#arr5)"/>
+
+      <!-- Hidden Layer 2 -->
+      <rect x="325" y="40" width="110" height="80" rx="10" fill="url(#gN)"/>
+      <text x="380" y="72" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Hidden Layer 2</text>
+      <text x="380" y="90" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">Σ(wx+b) → f(x)</text>
+
+      <!-- Arrow -->
+      <line x1="435" y1="80" x2="480" y2="80" stroke="#0984e3" stroke-width="2.5" marker-end="url(#arr5)"/>
+
+      <!-- Output -->
+      <rect x="485" y="45" width="100" height="70" rx="10" fill="url(#gFP)"/>
+      <text x="535" y="77" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Output</text>
+      <text x="535" y="95" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">ŷ (predicted)</text>
+
+      <!-- Arrow to Loss -->
+      <line x1="585" y1="80" x2="630" y2="80" stroke="#636e72" stroke-width="2" marker-end="url(#arr5)"/>
+
+      <!-- Loss -->
+      <rect x="635" y="45" width="90" height="70" rx="10" fill="url(#gL)"/>
+      <text x="680" y="72" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Loss</text>
+      <text x="680" y="90" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">L(y, ŷ)</text>
+
+      <!-- Backpropagation arrow (bottom) -->
+      <path d="M 680,115 L 680,155 L 65,155 L 65,115" stroke="#d63031" stroke-width="2.5" fill="none" marker-end="url(#arr5b)" stroke-dasharray="8,4"/>
+      <text x="370" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#d63031">← Backpropagation (update weights) ←</text>
+
+      <!-- Target label -->
+      <text x="680" y="38" text-anchor="middle" font-size="10" fill="#636e72">Target y</text>
+      <line x1="680" y1="40" x2="680" y2="45" stroke="#636e72" stroke-width="1.5"/>
+    </svg>
+    <div class="fig-caption">Forward propagation flows left → right (input → output). Backpropagation flows right → left (output → input), updating weights to reduce error.</div>
+  </div>
+</div>
+
+<!-- ===== FORWARD PROPAGATION ===== -->
+<div class="card">
+  <h2>1. Forward Propagation</h2>
+  <p><span class="keyword">Forward propagation</span> is the process of passing input data through the layers of a neural network to <span class="highlight">compute the output</span>. Data flows in one direction — from input to output.</p>
+
+  <h3>Steps in Forward Propagation</h3>
+  <div class="step-grid">
+    <div class="step-card">
+      <span class="step-num">1</span><h4>Input Layer</h4>
+      <p>Input data is fed into the network. Each input is multiplied by its corresponding weight and added to a bias term.</p>
+    </div>
+    <div class="step-card">
+      <span class="step-num">2</span><h4>Hidden Layers</h4>
+      <p>The weighted sum of inputs is passed through an <strong>activation function</strong> to introduce non-linearity. The output of one layer becomes the input for the next layer.</p>
+      <div class="formula-box" style="margin-top:8px;">
+        <span class="math-block"><span class="math">a</span><sup>[<span class="math">l</span>]</sup> = <span class="math">f</span>(<span class="math">W</span><sup>[<span class="math">l</span>]</sup> · <span class="math">a</span><sup>[<span class="math">l</span>−1]</sup> + <span class="math">b</span><sup>[<span class="math">l</span>]</sup>)</span>
+      </div>
+    </div>
+    <div class="step-card">
+      <span class="step-num">3</span><h4>Output Layer</h4>
+      <p>The final layer produces the output <span class="math">ŷ</span>, which is compared to the actual target value using a <strong>loss function</strong>.</p>
+    </div>
+  </div>
+
+  <div class="key-points" style="margin-top:16px;">
+    <strong style="color:#00b894;">Key Points:</strong>
+    <ul class="kp-list">
+      <li>Forward propagation calculates the predicted output.</li>
+      <li>It does <strong>not</strong> involve any weight updates.</li>
+      <li>It is a feed-forward process — data flows in one direction (input → output).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== BACKPROPAGATION ===== -->
+<div class="card">
+  <h2>2. Backpropagation</h2>
+  <p><span class="keyword">Backpropagation</span> is the process of calculating the <span class="highlight">gradient of the loss function</span> with respect to the weights and biases in the network, and then updating these parameters to minimize the loss.</p>
+
+  <!-- SVG: Chain rule illustration -->
+  <div class="figure-box">
+    <div class="fig-title">Figure 2 — Chain Rule in Backpropagation</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 150" width="700" height="150">
+      <defs>
+        <marker id="arr5c" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0,8 3,0 6" fill="#d63031"/>
+        </marker>
+      </defs>
+      <!-- Boxes: Loss -> Layer 3 -> Layer 2 -> Layer 1 -->
+      <rect x="10" y="30" width="130" height="70" rx="10" fill="#fff5f0" stroke="#d63031" stroke-width="2"/>
+      <text x="75" y="60" text-anchor="middle" font-size="12" font-weight="700" fill="#d63031">Loss L</text>
+      <text x="75" y="80" text-anchor="middle" font-size="10" fill="#636e72">∂L/∂ŷ</text>
+
+      <line x1="140" y1="65" x2="195" y2="65" stroke="#d63031" stroke-width="2" marker-end="url(#arr5c)"/>
+      <text x="168" y="55" text-anchor="middle" font-size="9" fill="#d63031">×</text>
+
+      <rect x="200" y="30" width="130" height="70" rx="10" fill="#fff5f0" stroke="#e17055" stroke-width="2"/>
+      <text x="265" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#e17055">Output Layer</text>
+      <text x="265" y="75" text-anchor="middle" font-size="10" fill="#636e72">∂ŷ/∂z³</text>
+      <text x="265" y="90" text-anchor="middle" font-size="10" fill="#636e72">∂z³/∂w³</text>
+
+      <line x1="330" y1="65" x2="385" y2="65" stroke="#d63031" stroke-width="2" marker-end="url(#arr5c)"/>
+      <text x="358" y="55" text-anchor="middle" font-size="9" fill="#d63031">×</text>
+
+      <rect x="390" y="30" width="130" height="70" rx="10" fill="#fff5f0" stroke="#e17055" stroke-width="2"/>
+      <text x="455" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#e17055">Hidden Layer 2</text>
+      <text x="455" y="75" text-anchor="middle" font-size="10" fill="#636e72">∂a²/∂z²</text>
+      <text x="455" y="90" text-anchor="middle" font-size="10" fill="#636e72">∂z²/∂w²</text>
+
+      <line x1="520" y1="65" x2="575" y2="65" stroke="#d63031" stroke-width="2" marker-end="url(#arr5c)"/>
+      <text x="548" y="55" text-anchor="middle" font-size="9" fill="#d63031">×</text>
+
+      <rect x="580" y="30" width="110" height="70" rx="10" fill="#fff5f0" stroke="#e17055" stroke-width="2"/>
+      <text x="635" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#e17055">Hidden Layer 1</text>
+      <text x="635" y="75" text-anchor="middle" font-size="10" fill="#636e72">∂a¹/∂z¹</text>
+      <text x="635" y="90" text-anchor="middle" font-size="10" fill="#636e72">∂z¹/∂w¹</text>
+
+      <text x="350" y="130" text-anchor="middle" font-size="11" fill="#d63031" font-weight="600">← Gradients flow backward using the Chain Rule: ∂L/∂w = ∂L/∂ŷ · ∂ŷ/∂z · ∂z/∂w →</text>
+      <text x="350" y="145" text-anchor="middle" font-size="10" fill="#636e72">Each layer multiplies local gradients — this is the chain rule of calculus</text>
+    </svg>
+    <div class="fig-caption">Backpropagation uses the chain rule to compute gradients layer by layer, from the loss back to the first hidden layer.</div>
+  </div>
+
+  <h3>Steps in Backpropagation</h3>
+  <div class="step-grid">
+    <div class="step-card bp">
+      <span class="step-num">1</span><h4>Calculate Error</h4>
+      <p>The error is computed using a loss function (e.g., MSE, Cross-Entropy) by comparing the predicted output <span class="math">ŷ</span> to the actual target value <span class="math">y</span>.</p>
+    </div>
+    <div class="step-card bp">
+      <span class="step-num">2</span><h4>Compute Gradients</h4>
+      <p>The gradient of the loss function with respect to each weight and bias is calculated using the <strong>chain rule of calculus</strong>. Gradients indicate the direction and magnitude of change needed to minimize the loss.</p>
+    </div>
+    <div class="step-card bp">
+      <span class="step-num">3</span><h4>Update Weights and Biases</h4>
+      <p>Weights and biases are updated using an optimization algorithm (e.g., Gradient Descent):</p>
+      <div class="formula-box" style="margin-top:8px;">
+        <span class="math-block"><span class="math">w</span><sup>(new)</sup> = <span class="math">w</span><sup>(old)</sup> − <span class="math">α</span> · <span class="frac"><span class="num">∂<span class="math">L</span></span><span class="den">∂<span class="math">w</span></span></span></span>
+      </div>
+      <p style="margin-top:6px;">Where <span class="math">α</span> is the learning rate, <span class="math">L</span> is the loss function, and <span class="math">w</span> is the weight.</p>
+    </div>
+    <div class="step-card bp">
+      <span class="step-num">4</span><h4>Repeat</h4>
+      <p>The process is repeated for <strong>multiple epochs</strong> until the loss is minimized and the model converges.</p>
+    </div>
+  </div>
+
+  <div class="key-points warn" style="margin-top:16px;">
+    <strong style="color:#e17055;">Key Points:</strong>
+    <ul class="kp-list warn">
+      <li>Backpropagation adjusts the weights and biases to minimize the error.</li>
+      <li>It is a <strong>feedback process</strong> — data (gradients) flows backward from the output to the input.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== COMPARISON TABLE ===== -->
+<div class="card">
+  <h2>Comparison: Forward Propagation vs. Backpropagation</h2>
+
+  <table class="cmp-table">
+    <thead>
+      <tr>
+        <th style="width:20%;">Aspect</th>
+        <th style="width:40%;">Forward Propagation</th>
+        <th style="width:40%;">Backpropagation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Direction</strong></td>
+        <td>Data flows <strong>forward</strong> (input → output)</td>
+        <td>Error flows <strong>backward</strong> (output → input)</td>
+      </tr>
+      <tr>
+        <td><strong>Purpose</strong></td>
+        <td>Computes the predicted output <span class="math">ŷ</span></td>
+        <td>Updates weights &amp; biases to minimize error</td>
+      </tr>
+      <tr>
+        <td><strong>Math Process</strong></td>
+        <td>Matrix multiplication + activation functions</td>
+        <td>Gradient calculation using the chain rule</td>
+      </tr>
+      <tr>
+        <td><strong>Role in Training</strong></td>
+        <td>Provides output for comparison with target</td>
+        <td>Optimizes network parameters based on error</td>
+      </tr>
+      <tr>
+        <td><strong>Dependency</strong></td>
+        <td>Independent of backpropagation</td>
+        <td>Requires output from forward propagation</td>
+      </tr>
+      <tr>
+        <td><strong>Output</strong></td>
+        <td>Predicted values <span class="math">ŷ</span></td>
+        <td>Updated weights and biases</td>
+      </tr>
+      <tr>
+        <td><strong>Weight Update</strong></td>
+        <td>No weight updates occur</td>
+        <td>Weights are updated every iteration</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== SUMMARY ===== -->
+<div class="card">
+  <h2>Summary</h2>
+  <ul class="imp-list">
+    <li><strong>Forward Propagation</strong> is the process of calculating the output of the network based on the input and current weights.</li>
+    <li><strong>Backpropagation</strong> is the process of adjusting the weights and biases to minimize the error between predicted and actual outputs.</li>
+    <li>Both methods are <strong>essential</strong> for training a neural network — forward propagation computes the output, and backpropagation ensures the model learns from its mistakes.</li>
+  </ul>
+</div>
+
+<footer>DL Unit 2 &mdash; Q5 &mdash; Forward &amp; Backpropagation &mdash; In-Sem Exam Preparation</footer>
+</body>
+</html>
