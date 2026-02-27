@@ -80,6 +80,11 @@
       .question-banner { padding: 20px; }
       .question-banner .q-text { font-size: 1.05rem; }
     }
+
+    /* Video section */
+    .video-card { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); padding: 20px 24px; margin-bottom: 26px; text-align: center; }
+    .video-card h2 { font-size: 1.05rem; color: #6c5ce7; margin-bottom: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; padding: 0; }
+    .video-card video { width: 100%; max-width: 720px; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,.12); }
   </style>
 </head>
 <body>
@@ -92,6 +97,15 @@
   <div class="q-label">Question 1 &bull; Unit 2 – Perceptrons</div>
   <div class="q-text">What is a Perceptron? What are the steps involved for training a Perceptron in Deep Learning?</div>
   <span class="q-marks">&#128221; 5 Marks</span>
+</div>
+
+<!-- ============ VIDEO ============ -->
+<div class="video-card">
+  <h2>&#127909; Video Explanation</h2>
+  <video controls preload="metadata">
+    <source src="video/The_Explainer__Perceptron.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 </div>
 
 <!-- ============ ANSWER ============ -->

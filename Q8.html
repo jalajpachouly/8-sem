@@ -41,6 +41,11 @@
     .app-list li::before { content:'▶'; color:var(--primary); font-size:.7rem; margin-top:5px; flex-shrink:0; }
     footer { text-align:center; margin-top:40px; font-size:.78rem; color:#b2bec3; }
     @media(max-width:680px){ body{padding:12px;} .feat-grid{grid-template-columns:1fr;} .card{padding:18px 16px;} }
+
+    /* Video section */
+    .video-card { background:var(--card); border-radius:14px; box-shadow:var(--shadow); padding:20px 24px; margin-bottom:26px; text-align:center; }
+    .video-card h2 { font-size:1.05rem; color:#6c5ce7; margin-bottom:14px; display:flex; align-items:center; justify-content:center; gap:8px; border:none; padding:0; }
+    .video-card video { width:100%; max-width:720px; border-radius:10px; box-shadow:0 4px 16px rgba(0,0,0,.12); }
   </style>
 </head>
 <body>
@@ -51,6 +56,15 @@
   <div class="q-label">Question 8 &bull; Unit 2 – Tools &amp; Frameworks</div>
   <div class="q-text">Write short note on PyTorch and Google Colab.</div>
   <span class="q-marks">&#128221; 5 Marks</span>
+</div>
+
+<!-- ============ VIDEO ============ -->
+<div class="video-card">
+  <h2>&#127909; Video Explanation</h2>
+  <video controls preload="metadata">
+    <source src="video/PyTorch_&_Colab__Free_AI_Lab.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 </div>
 
 <h1>PyTorch &amp; Google Colab</h1>
